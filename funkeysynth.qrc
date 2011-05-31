@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/funkeysynth/main.qml</file>
+        <file>qml/funkeysynth/Key.qml</file>
+        <file>qml/funkeysynth/Keyboard.qml</file>
+        <file>qml/funkeysynth/BlackKey.qml</file>
+        <file>qml/funkeysynth/WhiteKey.qml</file>
+        <file>qml/funkeysynth/Slider.qml</file>
+        <file>qml/funkeysynth/Oscillator.qml</file>
+        <file>qml/funkeysynth/Operator.qml</file>
+        <file>qml/funkeysynth/Button.qml</file>
+        <file>qml/funkeysynth/Modulators.qml</file>
+        <file>qml/funkeysynth/MainControls.qml</file>
+        <file>qml/funkeysynth/SingleStateButton.qml</file>
+        <file>qml/funkeysynth/ControlButtons.qml</file>
+        <file>qml/funkeysynth/LFO.qml</file>
+        <file>qml/funkeysynth/TextRectangle.qml</file>
+    </qresource>
+</RCC>
