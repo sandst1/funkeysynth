@@ -1,7 +1,7 @@
 # Add more folders to ship with the application, here
-folder_01.source = qml/funkeysynth
-folder_01.target = qml
-DEPLOYMENTFOLDERS = folder_01
+#folder_01.source = qml/funkeysynth
+#folder_01.target = qml
+#DEPLOYMENTFOLDERS = folder_01
 
 INCLUDEPATH += /usr/include /usr/include/malloc
 
