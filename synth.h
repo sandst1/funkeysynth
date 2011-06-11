@@ -19,15 +19,15 @@
 #ifndef SYNTH_H
 #define SYNTH_H
 
-#include <QObject>
 #include <QDeclarativeContext>
+#include <QMap>
+#include <QObject>
 
 #include <math.h>
 #include "constants_types.h"
 #include "effects.h"
 #include "lfo.h"
 #include "operator.h"
-
 
 #define AMOUNT_OF_OPERATORS 4
 
@@ -68,15 +68,16 @@ public:
         KEY_G3,
         KEY_CIS3 = KEY_CIS2+KEYS_IN_OCTAVE,
         KEY_DIS3,
-        KEY_FIS3
+        KEY_FIS3,
+        KEY_NONE
     };
 
     explicit Synth(QDeclarativeContext* context, QObject *parent = 0);
 
-    void keyPressed();
-    void keyReleased();
+    void keyPressed(Key key);
+    void keyReleased(Key key);
 
-    void setKey(Key key);
+    void setKey(Key key, Key prevKey);
 
     int releaseTime();
     float releaseStep();
@@ -94,10 +95,19 @@ signals:
 public slots:
 
 private:
-    Key m_key;
+    struct KeyData {
+        Key key;
+        float freq;
+        int periodInSamples;
+    };
+
+    KeyData* getFreeKey();
+    KeyData* getKeyData(const Key& key);
+
+
+    KeyData m_PressedKeys[2];
 
     int m_octaveFactor;    
-    static float m_freq;
 
     Operator* m_operators[AMOUNT_OF_OPERATORS];
 
@@ -105,11 +115,10 @@ private:
     LFO* m_lfo;
 
     int m_index;
-    int m_periodInSamples;
+    //int m_periodInSamples;
 
     bool m_pitchBend;
     int m_bendAmount;
-
 };
 
 #endif // SYNTH_H

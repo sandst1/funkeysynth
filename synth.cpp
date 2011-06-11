@@ -20,8 +20,6 @@
 #include <QFile>
 #include "synth.h"
 
-float Synth::m_freq = 0.00;
-
 Synth::Synth(QDeclarativeContext* context, QObject *parent) :
     QObject(parent), m_key(KEY_C), m_octaveFactor(8), m_index(0), m_periodInSamples(0), m_pitchBend(false), m_bendAmount(0)
 {
@@ -44,26 +42,33 @@ Synth::Synth(QDeclarativeContext* context, QObject *parent) :
 
     m_lfo = new LFO(this);
     context->setContextProperty("LFO", m_lfo);
+
+    m_pressedKeys[0].key = KEY_NONE;
+    m_pressedKeys[0].freq = 0.00;
+    m_PressedKeys[0].periodInSamples = 0;
+    m_pressedKeys[1].key = KEY_NONE;
+    m_pressedKeys[1].freq = 0.00;
+    m_PressedKeys[1].periodInSamples = 0;
 }
 
-void Synth::keyPressed()
+void Synth::keyPressed(Key key)
 {
     m_index = 0;
     for (int i = 0; i < AMOUNT_OF_OPERATORS; i++)
     {
-        m_operators[i]->keyPressed();
+        m_operators[i]->envelopeAttack();
     }
 }
 
-void Synth::keyReleased()
+void Synth::keyReleased(Key key)
 {
     for (int i = 0; i < AMOUNT_OF_OPERATORS; i++)
     {
-        m_operators[i]->keyReleased();
+        m_operators[i]->keyReleased();       
     }
 }
 
-void Synth::setKey(Key key)
+void Synth::setKey(Key key, Key prevKey)
 {
     m_key = key;
     m_freq = m_octaveFactor*(pow(2, (int)key/KEYS_IN_OCTAVE))*FREQZTABLE[(int)key % KEYS_IN_OCTAVE];
@@ -139,5 +144,32 @@ float Synth::snd()
     m_effects->apply(sample);
 
     return sample;
+
+}
+
+KeyData* Key::getFreeKey()
+{
+    if (m_pressedKeys[0].key == KEY_NONE)
+    {
+        return &(m_pressedKeys[0]);
+    }
+    else if (m_pressedKeys[1].key == KEY_NONE)
+    {
+        return &(m_pressedKeys[1]);
+    }
+    return NULL;
+}
+
+KeyData* Key::getKeyData(const Key& key)
+{
+    if (m_pressedKeys[0].key == key)
+    {
+        return &(m_pressedKeys[0]);
+    }
+    else if (m_pressedKeys[1].key == key)
+    {
+        return &(m_pressedKeys[1]);
+    }
+    return NULL;
 
 }

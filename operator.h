@@ -46,7 +46,7 @@ public:
         ENV_IDLE
     };
 
-    struct Envelope
+    struct EnvelopeSettings
     {
         int   attackTime; // ms
         int   decayTime; // ms
@@ -57,8 +57,12 @@ public:
         float releaseStep; // fractions / sample
 
         float sustainLevel; // volume level
+    };
 
+    struct Envelope
+    {
         EnvelopeState state;
+        float amp;
     };
 
     // QML control interface
@@ -71,10 +75,10 @@ public:
     Q_INVOKABLE void setVolume(int volume);
 
     // Interface for the Synth
-    float snd(float wphase);
+    float snd(float wphase, unsigned int envelope);
 
-    void keyPressed();
-    void keyReleased();
+    int envelopeAttack(unsigned int envelope);
+    void envelopeRelease(unsigned int envelope);
 
     int releaseTime();
     float releaseStep();
@@ -90,8 +94,7 @@ public slots:
 private:
     void calculateEnvelope();
 
-    void updateEnvelopeState();
-    float m_amp;
+    void updateEnvelopeState(unsigned int envelope);
     int m_modFactor;
 
     float m_volume;
@@ -100,8 +103,8 @@ private:
     bool m_followKeys;
     WaveType m_waveType;
 
-    Envelope m_envelope;
-
+    EnvelopeSettings m_envValues;
+    Envelope m_envelopes[2];
 };
 
 #endif // OPERATOR_H

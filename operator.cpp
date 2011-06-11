@@ -24,7 +24,15 @@
 #include <QThread>
 
 Operator::Operator(QObject *parent) :
-    QObject(parent), m_amp(1.00), m_modFactor(1), m_volume(0.00), m_periodInSamples(0), m_followKeys(true), m_waveType(SINE)
+    QObject(parent),
+    m_amp(1.00),
+    m_modFactor(1),
+    m_volume(0.00),
+    m_periodInSamples(0),
+    m_followKeys(true),
+    m_waveType(SINE),
+    m_envValues(),
+    m_envelopes()
 {
 }
 
@@ -78,7 +86,7 @@ void Operator::setVolume(int volume)
 
 // ENDOF QML interface
 
-float Operator::snd(float wphase)
+float Operator::snd(float wphase, unsigned int envelope)
 {
     float output = 0.00;
 
@@ -127,27 +135,30 @@ float Operator::snd(float wphase)
 
     updateEnvelopeState();
 
-    return output*m_amp*m_volume;
+    return output*m_envelopes[envelope]*m_volume;
 }
 
-void Operator::keyPressed()
-{
-    m_envelope.state = ENV_ATTACK;
+void Operator::envelopeAttack(unsigned int envelope)
+{     
+    m_envelopes[envelope].state = ENV_ATTACK;
 }
 
-void Operator::keyReleased()
+void Operator::envelopeRelease(unsigned int envelope)
 {
-    m_envelope.state = ENV_RELEASE;
+    if (envelope <= 1)
+    {
+        m_envelopes[envelope].state = ENV_RELEASE;
+    }
 }
 
 int Operator::releaseTime()
 {
-    return m_envelope.releaseTime;
+    return m_envValues.releaseTime;
 }
 
 float Operator::releaseStep()
 {
-    return m_envelope.releaseStep;
+    return m_envValues.releaseStep;
 }
 
 void Operator::setFollowsKeys(bool value)
@@ -165,54 +176,32 @@ float Operator::modFactor()
     return m_modFactor;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 void Operator::calculateEnvelope()
 {
-    m_envelope.attackStep = 1.00 / (MS_IN_SAMPLES*m_envelope.attackTime+0.00001);
-    m_envelope.decayStep  = (1.00-m_envelope.sustainLevel) / (MS_IN_SAMPLES*m_envelope.decayTime+0.00001);
-    m_envelope.releaseStep = m_envelope.sustainLevel / (MS_IN_SAMPLES*m_envelope.releaseTime+0.00001);
+    m_envValues.attackStep = 1.00 / (MS_IN_SAMPLES*m_envValues.attackTime+0.00001);
+    m_envValues.decayStep  = (1.00-m_envValues.sustainLevel) / (MS_IN_SAMPLES*m_envValues.decayTime+0.00001);
+    m_envValues.releaseStep = m_envValues.sustainLevel / (MS_IN_SAMPLES*m_envValues.releaseTime+0.00001);
 }
 
-void Operator::updateEnvelopeState()
+void Operator::updateEnvelopeState(unsigned int envelope)
 {
     // Update the envelope
-    switch (m_envelope.state)
+    switch (m_envelopes[envelope].state)
     {
         case ENV_ATTACK:
-            m_amp += m_envelope.attackStep;
+            m_amp += m_envValues.attackStep;
             if (m_amp >= 1.00)
             {
-                m_envelope.state = ENV_DECAY;
+                m_envelopes[envelope].state = ENV_DECAY;
             }
         break;
 
         case ENV_DECAY:
-            m_amp -= m_envelope.decayStep;
-            if (m_amp <= m_envelope.sustainLevel)
+            m_amp -= m_envValues.decayStep;
+            if (m_amp <= m_envValues.sustainLevel)
             {
-                m_amp = m_envelope.sustainLevel;
-                m_envelope.state = ENV_SUSTAIN;
+                m_envelopes[envelope].amp = m_envValues.sustainLevel;
+                m_envelopes[envelope].state = ENV_SUSTAIN;
             }
         break;
 
@@ -220,10 +209,10 @@ void Operator::updateEnvelopeState()
         break;
 
         case ENV_RELEASE:
-            m_amp -= m_envelope.releaseStep;
-            if (m_amp <= 0)
+            m_envelopes[envelope].amp -= m_envValues.releaseStep;
+            if (m_envelopes[envelope].amp <= 0)
             {
-                m_amp = 0.00;
+                m_envelopes[envelope].amp = 0.00;
             }
         break;
 

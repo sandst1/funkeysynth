@@ -51,7 +51,8 @@ int main(int argc, char *argv[])
     view->setViewport(glWidget);
     view->setSource(QUrl("qrc:/qml/funkeysynth/main.qml"));
     view->setResizeMode(QDeclarativeView::SizeRootObjectToView);
-    view->showFullScreen();
+    //view->showFullScreen();
+    view->showNormal();
 
     app.exec();
 

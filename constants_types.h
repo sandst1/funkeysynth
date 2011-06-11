@@ -54,6 +54,4 @@ const float FREQZTABLE[KEYS_IN_OCTAVE] = { FREQ_C, FREQ_D, FREQ_E, FREQ_F,
                                            FREQ_Gis, FREQ_Bb };
 
 
-
-
 #endif // CONSTANTS_TYPES_H
