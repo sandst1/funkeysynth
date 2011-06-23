@@ -77,7 +77,7 @@ public:
     // Interface for the Synth
     float snd(float wphase, unsigned int envelope);
 
-    int envelopeAttack(unsigned int envelope);
+    void envelopeAttack(unsigned int envelope);
     void envelopeRelease(unsigned int envelope);
 
     int releaseTime();
@@ -87,8 +87,12 @@ public:
     bool followsKeys();
     float modFactor();
 
-signals:
+    void reset(unsigned int envelope);
 
+    Envelope& getEnvelope(unsigned int index);
+
+signals:
+    void soundDone(unsigned int envelope);
 public slots:
 
 private:

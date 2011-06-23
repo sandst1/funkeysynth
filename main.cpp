@@ -22,6 +22,7 @@
 #include "qmlapplicationviewer.h"
 #include <QGLFormat>
 #include <QGLWidget>
+#include <QMutex>
 
 #include "audiocontrol.h"
 
@@ -43,6 +44,12 @@ int main(int argc, char *argv[])
     AudioControl audioControl(context);
     audioControl.start();
 
+    QMutex& waitAudio = audioControl.getStartLock();
+    qDebug("main::waiting for Audio thread to initialize");
+    waitAudio.lock();
+    qDebug("main::Audio thread initialized, setting up qml window");
+    waitAudio.unlock();
+
     QRect screenSize = app.desktop()->screenGeometry();
     context->setContextProperty("ScreenWidth", screenSize.width());
     context->setContextProperty("ScreenHeight", screenSize.height());
@@ -51,7 +58,8 @@ int main(int argc, char *argv[])
     view->setViewport(glWidget);
     view->setSource(QUrl("qrc:/qml/funkeysynth/main.qml"));
     view->setResizeMode(QDeclarativeView::SizeRootObjectToView);
-    //view->showFullScreen();
+    //qDebug("main::showing qml window");
+    //view->showFullScreen();    
     view->showNormal();
 
     app.exec();

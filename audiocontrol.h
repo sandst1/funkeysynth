@@ -20,6 +20,7 @@
 #define AudioControl_H
 
 #include <QDeclarativeContext>
+#include <QMutex>
 #include <QThread>
 #include <QTimer>
 #include <portaudio.h>
@@ -33,21 +34,24 @@ class AudioControl : public QThread
 public:
     explicit AudioControl(QDeclarativeContext* context, QObject *parent = 0);
 
+    QMutex& getStartLock();
+
     void run();
 
     // QML interface
     Q_INVOKABLE virtual void setKey(int key);
-    Q_INVOKABLE virtual void pressKey();
-    Q_INVOKABLE virtual void releaseKey();
+    Q_INVOKABLE virtual void pressKey(int key);
+    Q_INVOKABLE virtual void releaseKey(int key);
     Q_INVOKABLE virtual void exitApp();
 
 signals:
 
 public slots:
     void releaseNow();
-private:    
+private:
     void stopAudioStream();
     void terminateAudioStream(PaError err);
+    QMutex m_startLock;
     PaError initPortAudio();
 
     PaStream* m_audioStream;

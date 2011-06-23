@@ -93,19 +93,20 @@ public:
 signals:
 
 public slots:
-
+    void freeKey(unsigned int index);
 private:
     struct KeyData {
         Key key;
+        int index;
         float freq;
         int periodInSamples;
+        int phase;
     };
 
     KeyData* getFreeKey();
     KeyData* getKeyData(const Key& key);
 
-
-    KeyData m_PressedKeys[2];
+    KeyData m_pressedKeys[2];
 
     int m_octaveFactor;    
 
@@ -113,9 +114,6 @@ private:
 
     Effects* m_effects;
     LFO* m_lfo;
-
-    int m_index;
-    //int m_periodInSamples;
 
     bool m_pitchBend;
     int m_bendAmount;

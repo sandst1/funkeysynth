@@ -56,3 +56,20 @@ HEADERS += \
     flanger.h \
     phaser.h \
     lfo.h
+
+OTHER_FILES += \
+    qml/funkeysynth/WhiteKey.qml \
+    qml/funkeysynth/TextRectangle.qml \
+    qml/funkeysynth/Slider.qml \
+    qml/funkeysynth/SingleStateButton.qml \
+    qml/funkeysynth/Oscillator.qml \
+    qml/funkeysynth/Operator.qml \
+    qml/funkeysynth/Modulators.qml \
+    qml/funkeysynth/MainControls.qml \
+    qml/funkeysynth/main.qml \
+    qml/funkeysynth/LFO.qml \
+    qml/funkeysynth/Keyboard.qml \
+    qml/funkeysynth/Key.qml \
+    qml/funkeysynth/ControlButtons.qml \
+    qml/funkeysynth/Button.qml \
+    qml/funkeysynth/BlackKey.qml

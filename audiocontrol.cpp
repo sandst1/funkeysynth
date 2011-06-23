@@ -55,13 +55,19 @@ static int audioCallback(const void *inputBuffer, void *outputBuffer,
 }
 
 AudioControl::AudioControl(QDeclarativeContext* context, QObject *parent) :
-    QThread(parent)
+    QThread(parent), m_startLock()
 {
+    m_startLock.lock();
     m_qmlContext = context;
 
     m_releaseTimer = new QTimer();
     connect(m_releaseTimer, SIGNAL(timeout()), this, SLOT(releaseNow()));
     m_releaseTimer->setSingleShot(true);
+}
+
+QMutex& AudioControl::getStartLock()
+{
+    return m_startLock;
 }
 
 
@@ -80,6 +86,7 @@ void AudioControl::run()
     if (err != paNoError )
       terminateAudioStream(err);
 
+    m_startLock.unlock();
     exec();
 
     stopAudioStream();
@@ -93,18 +100,19 @@ void AudioControl::run()
 
 void AudioControl::setKey(int key)
 {
-    m_synth->setKey((Synth::Key)key);
+    // TODO: add a prevKey instead of 0!
+    m_synth->setKey((Synth::Key)key, (Synth::Key)0);
 }
 
-void AudioControl::pressKey()
+void AudioControl::pressKey(int key)
 {
-    m_synth->keyPressed();
+    m_synth->keyPressed((Synth::Key)key);
     Pa_StartStream(m_audioStream);
 }
 
-void AudioControl::releaseKey()
+void AudioControl::releaseKey(int key)
 {    
-    m_synth->keyReleased();
+    m_synth->keyReleased((Synth::Key)key);
 }
 
 void AudioControl::exitApp()

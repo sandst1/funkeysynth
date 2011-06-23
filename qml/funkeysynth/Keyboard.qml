@@ -182,15 +182,18 @@ Rectangle {
             var key = keyboard.childAt(mouseX, mouseY);
             key.press();
             playarea.currentKey = key;
-            PlayControl.pressKey();
+            PlayControl.pressKey(key.keyNum);
         }
 
         onPositionChanged: {
             var key = keyboard.childAt(mouseX, mouseY);
-            if (key != null && key.keyNum != playarea.currentKey.keyNum) {
+            if (key != null && key.keyNum != playarea.currentKey.keyNum) {                
                 playarea.currentKey.release();
+                PlayControl.releaseKey(playarea.currentKey.keyNum);
                 key.press();
                 playarea.currentKey = key;
+
+                PlayControl.pressKey(key.keyNum);
             }
 
             Wah.setWahFreq((((playarea.y + playarea.height) - mouseY)/(playarea.height))*2000 + 400);
@@ -199,11 +202,10 @@ Rectangle {
         }
 
         onReleased: {
-            if (playarea.currentKey != null) {
-                playarea.currentKey.release();
-                playarea.currentKey = null
-            }
-            PlayControl.releaseKey();
+            var key = keyboard.childAt(mouseX, mouseY);
+            key.release();
+            PlayControl.releaseKey(key.keyNum);
+            playarea.currentKey = null;
         }
     }
 

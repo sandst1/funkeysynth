@@ -10,7 +10,6 @@ Rectangle {
 
     function press() {
         key.state = "pressed";
-        PlayControl.setKey(key.keyNum);
     }
 
     function release() {

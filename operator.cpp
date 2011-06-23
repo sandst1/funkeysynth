@@ -25,7 +25,6 @@
 
 Operator::Operator(QObject *parent) :
     QObject(parent),
-    m_amp(1.00),
     m_modFactor(1),
     m_volume(0.00),
     m_periodInSamples(0),
@@ -46,7 +45,7 @@ void Operator::setAttack(int attack)
 {
     if (attack == 0)
         attack = 1;
-    m_envelope.attackTime = attack;
+    m_envValues.attackTime = attack;
     calculateEnvelope();
 }
 
@@ -54,13 +53,13 @@ void Operator::setDecay(int decay)
 {
     if (decay == 0)
         decay = 1;
-    m_envelope.decayTime = decay;
+    m_envValues.decayTime = decay;
     calculateEnvelope();
 }
 
 void Operator::setSustain(int sustain)
 {
-    m_envelope.sustainLevel = (float)sustain/100;
+    m_envValues.sustainLevel = (float)sustain/100;
     calculateEnvelope();
 }
 
@@ -68,7 +67,7 @@ void Operator::setRelease(int release)
 {
     if (release == 0)
         release = 1;
-    m_envelope.releaseTime = release;
+    m_envValues.releaseTime = release;
     calculateEnvelope();
 }
 
@@ -133,9 +132,9 @@ float Operator::snd(float wphase, unsigned int envelope)
         break;
     }
 
-    updateEnvelopeState();
+    updateEnvelopeState(envelope);
 
-    return output*m_envelopes[envelope]*m_volume;
+    return output*m_envelopes[envelope].amp*m_volume;
 }
 
 void Operator::envelopeAttack(unsigned int envelope)
@@ -176,6 +175,17 @@ float Operator::modFactor()
     return m_modFactor;
 }
 
+void Operator::reset(unsigned int envelope)
+{
+    m_envelopes[envelope].state = ENV_IDLE;
+    m_envelopes[envelope].amp = 0.00;
+}
+
+Operator::Envelope& Operator::getEnvelope(unsigned int index)
+{
+    return m_envelopes[index];
+}
+
 void Operator::calculateEnvelope()
 {
     m_envValues.attackStep = 1.00 / (MS_IN_SAMPLES*m_envValues.attackTime+0.00001);
@@ -189,16 +199,16 @@ void Operator::updateEnvelopeState(unsigned int envelope)
     switch (m_envelopes[envelope].state)
     {
         case ENV_ATTACK:
-            m_amp += m_envValues.attackStep;
-            if (m_amp >= 1.00)
+            m_envelopes[envelope].amp += m_envValues.attackStep;
+            if (m_envelopes[envelope].amp >= 1.00)
             {
                 m_envelopes[envelope].state = ENV_DECAY;
             }
         break;
 
         case ENV_DECAY:
-            m_amp -= m_envValues.decayStep;
-            if (m_amp <= m_envValues.sustainLevel)
+            m_envelopes[envelope].amp -= m_envValues.decayStep;
+            if (m_envelopes[envelope].amp <= m_envValues.sustainLevel)
             {
                 m_envelopes[envelope].amp = m_envValues.sustainLevel;
                 m_envelopes[envelope].state = ENV_SUSTAIN;
@@ -213,7 +223,9 @@ void Operator::updateEnvelopeState(unsigned int envelope)
             if (m_envelopes[envelope].amp <= 0)
             {
                 m_envelopes[envelope].amp = 0.00;
-            }
+                m_envelopes[envelope].state = ENV_IDLE;
+                emit this->soundDone(envelope);
+            }           
         break;
 
         case ENV_IDLE:
