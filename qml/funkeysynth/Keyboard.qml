@@ -236,7 +236,7 @@ Rectangle {
                 }
 
                 Wah.setWahFreq((((playarea.y + playarea.height) - touch.y)/(playarea.height))*2000 + 400);
-                SynthControl.setBendAmount((((playarea.y + playarea.height) - touch.y)/(playarea.height))*75);
+                SynthControl.setBendAmount((((playarea.y + playarea.height) - touch.y)/(playarea.height))*75, touch.index);
 
             }
         }

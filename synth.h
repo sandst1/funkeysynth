@@ -86,7 +86,7 @@ public:
     Q_INVOKABLE void octaveUp();
     Q_INVOKABLE void octaveDown();
     Q_INVOKABLE void setBend(bool state);
-    Q_INVOKABLE void setBendAmount(int bend);
+    Q_INVOKABLE void setBendAmount(int bend, unsigned int index);
 
     float snd();
 
@@ -101,6 +101,7 @@ private:
         float freq;
         int periodInSamples;
         int phase;
+        int bendAmount;
     };
 
     KeyData* getFreeKey();
@@ -116,7 +117,6 @@ private:
     LFO* m_lfo;
 
     bool m_pitchBend;
-    int m_bendAmount;
 };
 
 #endif // SYNTH_H

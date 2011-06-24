@@ -21,7 +21,7 @@
 #include "synth.h"
 
 Synth::Synth(QDeclarativeContext* context, QObject *parent) :
-    QObject(parent), m_pressedKeys(), m_octaveFactor(8), m_pitchBend(false), m_bendAmount(0)
+    QObject(parent), m_pressedKeys(), m_octaveFactor(8), m_pitchBend(false)
 {
     m_operators[0] = new Operator(this);
     m_operators[1] = new Operator(this);
@@ -138,9 +138,9 @@ void Synth::setBend(bool state)
     }*/
 }
 
-void Synth::setBendAmount(int bend)
+void Synth::setBendAmount(int bend, unsigned int index)
 {
-    m_bendAmount = bend;
+    m_pressedKeys[index].bendAmount = bend;
 }
 
 // ENDOF SynthControl interface
@@ -151,15 +151,20 @@ float Synth::snd()
     float sample = 0.0;
     float wc = 0.0;
 
-    /*if (m_pitchBend)
+    if (m_pitchBend)
     {
-        m_freq = m_octaveFactor*(pow(2, (int)m_key/KEYS_IN_OCTAVE));
-        float b = ((float)m_bendAmount/100);
+        m_pressedKeys[0].freq = m_octaveFactor*(pow(2, (int)m_pressedKeys[0].key/KEYS_IN_OCTAVE));
+        float b = ((float)m_pressedKeys[0].bendAmount/100);
         float a = 1.0 - b;
-        m_freq *= (a*FREQZTABLE[(int)m_key % KEYS_IN_OCTAVE] + b*FREQZTABLE[((int)m_key+1) % KEYS_IN_OCTAVE]);
-        m_periodInSamples = (int)((float)SAMPLE_RATE / (m_freq));
+        m_pressedKeys[0].freq *= (a*FREQZTABLE[(int)m_pressedKeys[0].key % KEYS_IN_OCTAVE] + b*FREQZTABLE[((int)m_pressedKeys[0].key+1) % KEYS_IN_OCTAVE]);
+        m_pressedKeys[0].periodInSamples = (int)((float)SAMPLE_RATE / (m_pressedKeys[0].freq));
 
-    }*/
+        m_pressedKeys[1].freq = m_octaveFactor*(pow(2, (int)m_pressedKeys[1].key/KEYS_IN_OCTAVE));
+        b = ((float)m_pressedKeys[1].bendAmount/100);
+        a = 1.0 - b;
+        m_pressedKeys[1].freq *= (a*FREQZTABLE[(int)m_pressedKeys[1].key % KEYS_IN_OCTAVE] + b*FREQZTABLE[((int)m_pressedKeys[1].key+1) % KEYS_IN_OCTAVE]);
+        m_pressedKeys[1].periodInSamples = (int)((float)SAMPLE_RATE / (m_pressedKeys[1].freq));
+    }
 
     m_pressedKeys[0].phase++;
     if (m_pressedKeys[0].phase>=m_pressedKeys[0].periodInSamples)
