@@ -171,7 +171,7 @@ float Synth::snd()
                                 m_operators[1]->snd(m_operators[1]->modFactor()*wc*(float)phase - M_PI_PER2, 0) +
                                 m_operators[2]->snd(m_operators[2]->modFactor()*wc*(float)phase - M_PI_PER2, 0) +
                                 m_operators[3]->snd(m_operators[3]->modFactor()*wc*(float)phase - M_PI_PER2, 0) +
-                                m_lfo->snd() - M_PI_PER2, 0);
+                                m_lfo->snd() - M_PI_PER2, 0) * 0.5;
 
     m_pressedKeys[1].phase++;
     if (m_pressedKeys[1].phase>=m_pressedKeys[1].periodInSamples)
@@ -183,7 +183,7 @@ float Synth::snd()
                                 m_operators[1]->snd(m_operators[1]->modFactor()*wc*(float)phase - M_PI_PER2, 1) +
                                 m_operators[2]->snd(m_operators[2]->modFactor()*wc*(float)phase - M_PI_PER2, 1) +
                                 m_operators[3]->snd(m_operators[3]->modFactor()*wc*(float)phase - M_PI_PER2, 1) +
-                                m_lfo->snd() - M_PI_PER2, 1);
+                                m_lfo->snd() - M_PI_PER2, 1) * 0.5;
 
     m_effects->apply(sample);
 
