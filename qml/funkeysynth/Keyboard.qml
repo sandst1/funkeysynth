@@ -211,14 +211,14 @@ Rectangle {
                 var key = keyboard.childAt(touch1.x, touch1.y);
                 key.press();
                 playarea.currentKey1 = key;
-                PlayControl.pressKey(key.keyNum);
+                PlayControl.pressKey(key.keyNum, 0);
             }
 
             if (touch2.valid) {
                 var key = keyboard.childAt(touch2.x, touch2.y);
                 key.press();
                 playarea.currentKey1 = key;
-                PlayControl.pressKey(key.keyNum);
+                PlayControl.pressKey(key.keyNum, 1);
             }
         }
 
@@ -227,10 +227,10 @@ Rectangle {
                 var key = keyboard.childAt(touch1.x, touch1.y);
                 if (key != null && key.keyNum != playarea.currentKey1.keyNum) {
                     playarea.currentKey1.release();
-                    PlayControl.releaseKey(playarea.currentKey1.keyNum);
+                    PlayControl.releaseKey(playarea.currentKey1.keyNum, 0);
                     key.press();
                     playarea.currentKey1 = key;
-                    PlayControl.pressKey(key.keyNum);
+                    PlayControl.pressKey(key.keyNum, 0);
                 }
 
                 Wah.setWahFreq((((playarea.y + playarea.height) - touch1.y)/(playarea.height))*2000 + 400);
@@ -241,10 +241,10 @@ Rectangle {
                 var key = keyboard.childAt(touch2.x, touch2.y);
                 if (key != null && key.keyNum != playarea.currentKey2.keyNum) {
                     playarea.currentKey2.release();
-                    PlayControl.releaseKey(playarea.currentKey2.keyNum);
+                    PlayControl.releaseKey(playarea.currentKey2.keyNum, 1);
                     key.press();
                     playarea.currentKey2 = key;
-                    PlayControl.pressKey(key.keyNum);
+                    PlayControl.pressKey(key.keyNum, 1);
                 }
                 Wah.setWahFreq((((playarea.y + playarea.height) - touch2.y)/(playarea.height))*2000 + 400);
                 SynthControl.setBendAmount((((playarea.y + playarea.height) - touch2.y)/(playarea.height))*75);
@@ -256,14 +256,14 @@ Rectangle {
             if (touch1.valid) {
                 var key = keyboard.childAt(touch1.x, touch1.y);
                 key.release();
-                PlayControl.releaseKey(key.keyNum);
+                PlayControl.releaseKey(key.keyNum, 0);
                 playarea.currentKey1 = null;
             }
 
             if (touch2.valid) {
                 var key = keyboard.childAt(touch2.x, touch2.y);
                 key.release();
-                PlayControl.releaseKey(key.keyNum);
+                PlayControl.releaseKey(key.keyNum, 1);
                 playarea.currentKey2 = null;
             }
         }

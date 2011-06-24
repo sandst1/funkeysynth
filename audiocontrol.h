@@ -39,9 +39,9 @@ public:
     void run();
 
     // QML interface
-    Q_INVOKABLE virtual void setKey(int key);
-    Q_INVOKABLE virtual void pressKey(int key);
-    Q_INVOKABLE virtual void releaseKey(int key);
+    //Q_INVOKABLE virtual void setKey(int key, unsigned int index);
+    Q_INVOKABLE virtual void pressKey(int key, unsigned int index);
+    Q_INVOKABLE virtual void releaseKey(int key, unsigned int index);
     Q_INVOKABLE virtual void exitApp();
 
 signals:

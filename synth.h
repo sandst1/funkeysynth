@@ -74,10 +74,10 @@ public:
 
     explicit Synth(QDeclarativeContext* context, QObject *parent = 0);
 
-    void keyPressed(Key key);
-    void keyReleased(Key key);
+    void keyPressed(Key key, unsigned int index);
+    void keyReleased(Key key, unsigned int index);
 
-    void setKey(Key key, Key prevKey);
+    //void setKey(Key key, Key prevKey, unsigned int index);
 
     int releaseTime();
     float releaseStep();

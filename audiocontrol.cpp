@@ -98,21 +98,20 @@ void AudioControl::run()
 
 /****** QML PlayControl interface *****/
 
-void AudioControl::setKey(int key)
-{
-    // TODO: add a prevKey instead of 0!
-    m_synth->setKey((Synth::Key)key, (Synth::Key)0);
-}
+//void AudioControl::setKey(int key, unsigned int index)
+//{
+//    m_synth->setKey((Synth::Key)key, index);
+//}
 
-void AudioControl::pressKey(int key)
+void AudioControl::pressKey(int key, unsigned int index)
 {
-    m_synth->keyPressed((Synth::Key)key);
+    m_synth->keyPressed((Synth::Key)key, index);
     Pa_StartStream(m_audioStream);
 }
 
-void AudioControl::releaseKey(int key)
+void AudioControl::releaseKey(int key, unsigned int index)
 {    
-    m_synth->keyReleased((Synth::Key)key);
+    m_synth->keyReleased((Synth::Key)key, index);
 }
 
 void AudioControl::exitApp()

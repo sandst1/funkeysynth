@@ -56,10 +56,10 @@ Synth::Synth(QDeclarativeContext* context, QObject *parent) :
     connect(m_operators[0], SIGNAL(soundDone(uint)), this, SLOT(freeKey(uint)));
 }
 
-void Synth::keyPressed(Key key)
+void Synth::keyPressed(Key key, unsigned int index)
 {
 
-    KeyData* keyData = getFreeKey();
+    KeyData* keyData = &(m_pressedKeys[index]);
     if (keyData != NULL)
     {
         keyData->freq = m_octaveFactor*(pow(2, (int)key/KEYS_IN_OCTAVE))*FREQZTABLE[(int)key % KEYS_IN_OCTAVE];
@@ -78,9 +78,9 @@ void Synth::keyPressed(Key key)
     }
 }
 
-void Synth::keyReleased(Key key)
+void Synth::keyReleased(Key key, unsigned int index)
 {
-    KeyData* keyData = getKeyData(key);
+    KeyData* keyData = &(m_pressedKeys[index]);
     if (keyData != NULL)
     {
         for (int i = 0; i < AMOUNT_OF_OPERATORS; i++)
@@ -94,12 +94,12 @@ void Synth::keyReleased(Key key)
     }
 }
 
-void Synth::setKey(Key key, Key prevKey)
+/*void Synth::setKey(Key key, unsigned int index)
 {
     //m_key = key;
     //m_freq = m_octaveFactor*(pow(2, (int)key/KEYS_IN_OCTAVE))*FREQZTABLE[(int)key % KEYS_IN_OCTAVE];
     //m_periodInSamples = (int)((float)SAMPLE_RATE / (m_freq));
-}
+}*/
 
 int Synth::releaseTime()
 {
