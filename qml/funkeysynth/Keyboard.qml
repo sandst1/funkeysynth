@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import Qt 4.7
+import com.meego 1.0
 
 Rectangle {
     id: container
