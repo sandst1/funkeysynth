@@ -225,8 +225,8 @@ Rectangle {
         onTouchMove: {
             if (touch1.valid) {
                 var key = keyboard.childAt(touch1.x, touch1.y);
-                if (key != null && key.keyNum != playArea.currentKey1.keyNum) {
-                    playArea.currentKey1.release();
+                if (key != null && key.keyNum != playarea.currentKey1.keyNum) {
+                    playarea.currentKey1.release();
                     PlayControl.releaseKey(playarea.currentKey1.keyNum);
                     key.press();
                     playarea.currentKey = key;
@@ -239,8 +239,8 @@ Rectangle {
 
             if (touch2.valid) {
                 var key = keyboard.childAt(touch2.x, touch2.y);
-                if (key != null && key.keyNum != playArea.currentKey2.keyNum) {
-                    playArea.currentKey2.release();
+                if (key != null && key.keyNum != playarea.currentKey2.keyNum) {
+                    playarea.currentKey2.release();
                     PlayControl.releaseKey(playarea.currentKey2.keyNum);
                     key.press();
                     playarea.currentKey = key;
