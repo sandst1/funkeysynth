@@ -129,6 +129,7 @@ class QDeclarativeTouchArea : public QDeclarativeItem
 
     Q_PROPERTY(QList<QObject*> touches READ touches)
     Q_PROPERTY(QList<QObject*> changedTouches READ changedTouches)
+    Q_PROPERTY(QList<QObject*> releasedTouches READ releasedTouches)
     Q_PROPERTY(QDeclarativeListProperty<QDeclarativeTouchPoint> touchPoints READ touchPoints NOTIFY touchPointsChanged)
     Q_PROPERTY(int minimumTouches READ minimumTouches WRITE setMinimumTouches)
     Q_PROPERTY(int maximumTouches READ maximumTouches WRITE setMaximumTouches)
@@ -155,6 +156,7 @@ public:
 
     QList<QObject*> touches() { return _touches.values(); }
     QList<QObject*> changedTouches() { return _changedTouches.values(); }
+    QList<QObject*> releasedTouches() { return _releasedTouches; }
 
     QDeclarativeListProperty<QDeclarativeTouchPoint> touchPoints() {
         return QDeclarativeListProperty<QDeclarativeTouchPoint>(this, 0, QDeclarativeTouchArea::touchPoint_append, QDeclarativeTouchArea::touchPoint_count, QDeclarativeTouchArea::touchPoint_at, 0);
