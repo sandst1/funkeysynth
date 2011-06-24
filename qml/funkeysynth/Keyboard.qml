@@ -190,7 +190,85 @@ Rectangle {
         }
     }
 
-    MouseArea {
+    TouchArea {
+        id: playarea
+        anchors.fill: parent
+
+        property Key currentKey1
+        property Key currentKey2
+
+        minimumTouches: 1
+        maximumTouches: 2
+
+        touchPoints: [
+            TouchPoint { id: touch1 },
+            TouchPoint { id: touch2 }
+        ]
+
+        onTouchStart: {
+            if (touch1.valid) {
+                var key = keyboard.childAt(touch1.x, touch1.y);
+                key.press();
+                playarea.currentKey1 = key;
+                PlayControl.pressKey(key.keyNum);
+            }
+
+            if (touch2.valid) {
+                var key = keyboard.childAt(touch2.x, touch2.y);
+                key.press();
+                playarea.currentKey1 = key;
+                PlayControl.pressKey(key.keyNum);
+            }
+        }
+
+        onTouchMove: {
+            if (touch1.valid) {
+                var key = keyboard.childAt(touch1.x, touch1.y);
+                if (key != null && key.keyNum != playArea.currentKey1.keyNum) {
+                    playArea.currentKey1.release();
+                    PlayControl.releaseKey(playarea.currentKey1.keyNum);
+                    key.press();
+                    playarea.currentKey = key;
+                    PlayControl.pressKey(key.keyNum);
+                }
+
+                Wah.setWahFreq((((playarea.y + playarea.height) - touch1.y)/(playarea.height))*2000 + 400);
+                SynthControl.setBendAmount((((playarea.y + playarea.height) - touch1.y)/(playarea.height))*75);
+            }
+
+            if (touch2.valid) {
+                var key = keyboard.childAt(touch2.x, touch2.y);
+                if (key != null && key.keyNum != playArea.currentKey2.keyNum) {
+                    playArea.currentKey2.release();
+                    PlayControl.releaseKey(playarea.currentKey2.keyNum);
+                    key.press();
+                    playarea.currentKey = key;
+                    PlayControl.pressKey(key.keyNum);
+                }
+                Wah.setWahFreq((((playarea.y + playarea.height) - touch2.y)/(playarea.height))*2000 + 400);
+                SynthControl.setBendAmount((((playarea.y + playarea.height) - touch2.y)/(playarea.height))*75);
+            }
+
+        }
+
+        onTouchEnd: {
+            if (touch1.valid) {
+                var key = keyboard.childAt(touch1.x, touch1.y);
+                key.release();
+                PlayControl.releaseKey(key.keyNum);
+                playarea.currentKey1 = null;
+            }
+
+            if (touch2.valid) {
+                var key = keyboard.childAt(touch2.x, touch2.y);
+                key.release();
+                PlayControl.releaseKey(key.keyNum);
+                playarea.currentKey2 = null;
+            }
+        }
+    }
+
+ /*   MouseArea {
         id: playarea
 
         property Key currentKey
@@ -225,7 +303,7 @@ Rectangle {
             PlayControl.releaseKey(key.keyNum);
             playarea.currentKey = null;
         }
-    }
+    }*/
 
     states: [
         State {

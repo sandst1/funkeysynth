@@ -25,6 +25,7 @@
 #include <QMutex>
 
 #include "audiocontrol.h"
+#include "qdeclarativetoucharea.h"
 
 int main(int argc, char *argv[])
 {
@@ -32,6 +33,7 @@ int main(int argc, char *argv[])
     QApplication::setGraphicsSystem("opengl");
 
     QDeclarativeView* view = new QDeclarativeView();
+    QDeclarativeTouchArea::registerQML();
 
     QGLFormat format = QGLFormat::defaultFormat();
     format.setSampleBuffers(false);
