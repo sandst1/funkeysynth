@@ -210,7 +210,7 @@ Rectangle {
         ]
 
         onTouchStart: {
-            for (var i=0; i < playarea.changedTouches.size(); i++) {
+            for (var i=0; i < playarea.changedTouches.length(); i++) {
                 var touch = playarea.changedTouches[i];
                 var key = keyboard.childAt(touch.x, touch.y);
                 key.press();
@@ -234,7 +234,7 @@ Rectangle {
         }
 
         onTouchMove: {
-            for (var i=0; i < playarea.changedTouches.size(); i++) {
+            for (var i=0; i < playarea.changedTouches.length(); i++) {
                 var touch = playarea.changedTouches[i];
                 var key = keyboard.childAt(touch.x, touch.y);
                 if (key != null && key.keyNum != touch.currentKey.keyNum) {
@@ -280,7 +280,7 @@ Rectangle {
         }
 
         onTouchEnd: {
-            for (var i=0; i < playarea.changedTouches.size(); i++) {
+            for (var i=0; i < playarea.changedTouches.length(); i++) {
                 var touch = playarea.changedTouches[i];
                 var key = keyboard.childAt(touch.x, touch.y);
                 key.release();
