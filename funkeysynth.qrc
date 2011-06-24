@@ -15,5 +15,6 @@
         <file>qml/funkeysynth/ControlButtons.qml</file>
         <file>qml/funkeysynth/LFO.qml</file>
         <file>qml/funkeysynth/TextRectangle.qml</file>
+        <file>qml/funkeysynth/KeyTouchPoint.qml</file>
     </qresource>
 </RCC>

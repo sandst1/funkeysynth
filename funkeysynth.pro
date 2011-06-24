@@ -92,4 +92,5 @@ OTHER_FILES += \
     qml/funkeysynth/Key.qml \
     qml/funkeysynth/ControlButtons.qml \
     qml/funkeysynth/Button.qml \
-    qml/funkeysynth/BlackKey.qml
+    qml/funkeysynth/BlackKey.qml \
+    qml/funkeysynth/KeyTouchPoint.qml
