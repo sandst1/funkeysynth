@@ -195,19 +195,30 @@ Rectangle {
         id: playarea
         anchors.fill: parent
 
-        property Key currentKey1
-        property Key currentKey2
-
         minimumTouches: 1
         maximumTouches: 2
 
         touchPoints: [
-            TouchPoint { id: touch1 },
-            TouchPoint { id: touch2 }
+            TouchPoint {
+                id: touch1
+                property Key currentKey
+            },
+            TouchPoint {
+                id: touch2
+                property Key currentKey
+            }
         ]
 
         onTouchStart: {
-            if (touch1.valid) {
+            for (var i=0; i < playarea.changedTouches.size(); i++) {
+                var touch = playarea.changedTouches[i];
+                var key = keyboard.childAt(touch.x, touch.y);
+                key.press();
+                touch.currentKey = key;
+                PlayControl.pressKey(key.keyNum, 0);
+            }
+
+            /*if (touch1.valid) {
                 var key = keyboard.childAt(touch1.x, touch1.y);
                 key.press();
                 playarea.currentKey1 = key;
@@ -219,11 +230,27 @@ Rectangle {
                 key.press();
                 playarea.currentKey1 = key;
                 PlayControl.pressKey(key.keyNum, 1);
-            }
+            }*/
         }
 
         onTouchMove: {
-            if (touch1.valid) {
+            for (var i=0; i < playarea.changedTouches.size(); i++) {
+                var touch = playarea.changedTouches[i];
+                var key = keyboard.childAt(touch.x, touch.y);
+                if (key != null && key.keyNum != touch.currentKey.keyNum) {
+                    touch.currentKey.release();
+                    PlayControl.releaseKey(touch.currentKey.keyNum, 0);
+                    key.press();
+                    touch.currentKey = key;
+                    PlayControl.pressKey(key.keyNum, 0);
+                }
+
+                Wah.setWahFreq((((playarea.y + playarea.height) - touch.y)/(playarea.height))*2000 + 400);
+                SynthControl.setBendAmount((((playarea.y + playarea.height) - touch.y)/(playarea.height))*75);
+
+            }
+
+            /*if (touch1.valid) {
                 var key = keyboard.childAt(touch1.x, touch1.y);
                 if (key != null && key.keyNum != playarea.currentKey1.keyNum) {
                     playarea.currentKey1.release();
@@ -248,12 +275,19 @@ Rectangle {
                 }
                 Wah.setWahFreq((((playarea.y + playarea.height) - touch2.y)/(playarea.height))*2000 + 400);
                 SynthControl.setBendAmount((((playarea.y + playarea.height) - touch2.y)/(playarea.height))*75);
-            }
+            }*/
 
         }
 
         onTouchEnd: {
-            if (touch1.valid) {
+            for (var i=0; i < playarea.changedTouches.size(); i++) {
+                var touch = playarea.changedTouches[i];
+                var key = keyboard.childAt(touch.x, touch.y);
+                key.release();
+                PlayControl.releaseKey(key.keyNum, 0);
+                touch.currentKey = null;
+            }
+            /*if (touch1.valid) {
                 var key = keyboard.childAt(touch1.x, touch1.y);
                 key.release();
                 PlayControl.releaseKey(key.keyNum, 0);
@@ -265,7 +299,7 @@ Rectangle {
                 key.release();
                 PlayControl.releaseKey(key.keyNum, 1);
                 playarea.currentKey2 = null;
-            }
+            }*/
         }
     }
 
