@@ -212,9 +212,9 @@ Rectangle {
         ]
 
         onTouchStart: {
-            console.log("ontouchStart, amount of touches: " + playarea.changedTouches.length);
-            for (var i=0; i < playarea.changedTouches.length; i++) {
-                var touch = playarea.changedTouches[i];
+            console.log("ontouchStart, amount of touches: " + playarea.touches.length);
+            for (var i=0; i < playarea.touches.length; i++) {
+                var touch = playarea.touches[i];
                 var key = keyboard.childAt(touch.x, touch.y);
                 key.press();
                 touch.currentKey = key;
@@ -242,9 +242,9 @@ Rectangle {
         }
 
         onTouchEnd: {
-            console.log("ontouchEnd, amount of touches: " + playarea.changedTouches.length);
-            for (var i=0; i < playarea.changedTouches.length; i++) {
-                var touch = playarea.changedTouches[i];
+            console.log("ontouchEnd, amount of touches: " + playarea.touches.length);
+            for (var i=0; i < playarea.touches.length; i++) {
+                var touch = playarea.touches[i];
                 var key = keyboard.childAt(touch.x, touch.y);
                 key.release();
                 PlayControl.releaseKey(key.keyNum, touch.index);
