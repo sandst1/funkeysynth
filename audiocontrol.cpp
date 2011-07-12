@@ -100,7 +100,7 @@ void AudioControl::run()
 
 //void AudioControl::setKey(int key, unsigned int index)
 //{
-//    m_synth->setKey((Synth::Key)key, index);
+    //m_synth->setKey((Synth::Key)key, index);
 //}
 
 void AudioControl::pressKey(int key, unsigned int index)
@@ -112,6 +112,11 @@ void AudioControl::pressKey(int key, unsigned int index)
 void AudioControl::releaseKey(int key, unsigned int index)
 {    
     m_synth->keyReleased((Synth::Key)key, index);
+}
+
+void AudioControl::sustainKey(int key, unsigned int index)
+{
+    m_synth->keySustain((Synth::Key)key, index);
 }
 
 void AudioControl::exitApp()

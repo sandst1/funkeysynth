@@ -79,6 +79,7 @@ public:
 
     void envelopeAttack(unsigned int envelope);
     void envelopeRelease(unsigned int envelope);
+    void envelopeSustain(unsigned int envelope);
 
     int releaseTime();
     float releaseStep();

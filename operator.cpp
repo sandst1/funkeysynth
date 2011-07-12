@@ -144,10 +144,13 @@ void Operator::envelopeAttack(unsigned int envelope)
 
 void Operator::envelopeRelease(unsigned int envelope)
 {
-    if (envelope <= 1)
-    {
-        m_envelopes[envelope].state = ENV_RELEASE;
-    }
+    m_envelopes[envelope].state = ENV_RELEASE;
+}
+
+void Operator::envelopeSustain(unsigned int envelope)
+{
+    m_envelopes[envelope].amp = m_envValues.sustainLevel;
+    m_envelopes[envelope].state = ENV_SUSTAIN;
 }
 
 int Operator::releaseTime()

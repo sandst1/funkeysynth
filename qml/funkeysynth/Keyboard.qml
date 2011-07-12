@@ -232,7 +232,7 @@ Rectangle {
                     PlayControl.releaseKey(touch.currentKey.keyNum, touch.index);
                     key.press();
                     touch.currentKey = key;
-                    PlayControl.pressKey(key.keyNum, touch.index);
+                    PlayControl.sustainKey(key.keyNum, touch.index);
                 }
 
                 Wah.setWahFreq((((playarea.y + playarea.height) - touch.y)/(playarea.height))*2000 + 400);

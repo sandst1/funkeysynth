@@ -96,6 +96,26 @@ void Synth::keyReleased(Key key, unsigned int index)
     }
 }
 
+void Synth::keySustain(Key key, unsigned int index)
+{
+    KeyData* keyData = &(m_pressedKeys[index]);
+    if (keyData != NULL)
+    {
+        keyData->freq = m_octaveFactor*(pow(2, (int)key/KEYS_IN_OCTAVE))*FREQZTABLE[(int)key % KEYS_IN_OCTAVE];
+        keyData->periodInSamples = (int)((float)SAMPLE_RATE / (keyData->freq));
+        keyData->key = key;
+        keyData->phase = 0;
+        for (int i = 0; i < AMOUNT_OF_OPERATORS; i++)
+        {
+            m_operators[i]->envelopeSustain(keyData->index);
+        }
+    }
+    else
+    {
+        qDebug("Synth::keySustain ERROR: KeyData is NULL!!");
+    }
+}
+
 /*void Synth::setKey(Key key, unsigned int index)
 {
     //m_key = key;

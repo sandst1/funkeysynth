@@ -42,6 +42,7 @@ public:
     //Q_INVOKABLE virtual void setKey(int key, unsigned int index);
     Q_INVOKABLE virtual void pressKey(int key, unsigned int index);
     Q_INVOKABLE virtual void releaseKey(int key, unsigned int index);
+    Q_INVOKABLE virtual void sustainKey(int key, unsigned int index);
     Q_INVOKABLE virtual void exitApp();
 
 signals:

@@ -76,6 +76,7 @@ public:
 
     void keyPressed(Key key, unsigned int index);
     void keyReleased(Key key, unsigned int index);
+    void keySustain(Key key, unsigned int index);
 
     //void setKey(Key key, Key prevKey, unsigned int index);
 
