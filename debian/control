@@ -1,0 +1,13 @@
+Source: funkeysynth
+Section: unknown
+Priority: extra
+Maintainer: maintainer Topi Santakivi <topi.santakivi@gmail.com>
+Build-Depends: debhelper (>= 7), libqt4-dev, portaudio19-dev
+Standards-Version: 3.8.4
+Homepage: http://gitorious.org/funkeysynth/funkeysynth
+
+Package: funkeysynth
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Funkeysynth
+   FunkeySynth, a mobile synthesizer

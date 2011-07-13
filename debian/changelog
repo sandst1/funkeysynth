@@ -1,0 +1,5 @@
+funkeysynth (0.11-1) unstable; urgency=low
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- maintainer Topi Santakivi <topi.santakivi@gmail.com>  Wed, 13 Jul 2011 12:19:43 +0300
