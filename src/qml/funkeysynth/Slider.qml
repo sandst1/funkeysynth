@@ -22,6 +22,7 @@ Rectangle {
     id: slider
     width: 80
     height: 200
+    visible: false
     property int range: slider.height-handle.height
     property int max: 1000
     property int value: Math.round(((range-handle.y))*max/(range))

@@ -19,8 +19,8 @@
 import Qt 4.7
 
 Rectangle {
-    width: 1368
-    height: 768
+    width: 854
+    height: 480
     //width: ScreenWidth
     //height: ScreenHeight
 
@@ -30,25 +30,37 @@ Rectangle {
         GradientStop { position: 1.0; color: "white" }
     }
 
-    MainControls {
-        id: mainControls
-        anchors.top: parent.top
-        anchors.topMargin: 10
-        anchors.left: controlButtons.left
-//        x: controlButtons.x + width/2
+    Oscillator {
+        id: mainOsc
+        //anchors.verticalCenter: parent.verticalCenter
+        //anchors.centerIn: parent
+        anchors.margins: 10
+        anchors.bottom: keyboard.top
+        anchors.left: parent.left
+        onStateChanged: { Operator1.setWaveType(value); }
+        name: operator.name
     }
 
     ControlButtons {
         id: controlButtons
-        anchors.bottomMargin: 10
+        anchors.left: mainOsc.right
+        anchors.margins: 10
         anchors.bottom: keyboard.top
     }
 
-    Modulators {
+    /*
+    MainControls {
+        id: mainControls
+        anchors.bottom: keyboard.top
+        anchors.right: controlButtons.left
+//        x: controlButtons.x + width/2
+    }*/
+
+    /*Modulators {
         id: modulators
         y: 10
         x: 10
-    }
+    }*/
 
     Keyboard {
         id: keyboard
@@ -57,5 +69,11 @@ Rectangle {
     }
 
     Component.onCompleted: {
+        Operator1.setAttack(0)
+        Operator1.setDecay(0)
+        Operator1.setSustain(100)
+        Operator1.setRelease(0)
+        Operator1.setModFactor(1);
+        Operator1.setVolume(75);
     }
 }

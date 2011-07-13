@@ -34,7 +34,7 @@ Column {
         border.color: "#3952ED"
         border.width: 2
 
-        radius: 10
+        radius: 5
         property int curState: 0
         property string name: "-1"
 
@@ -82,7 +82,7 @@ Column {
         }
     }
 
-    Rectangle {
+/*    Rectangle {
         width: 60
         height: 60
 
@@ -101,5 +101,5 @@ Column {
             horizontalAlignment: Text.AlignHCenter
             font.pointSize: 32
         }
-    }
+    }*/
 }

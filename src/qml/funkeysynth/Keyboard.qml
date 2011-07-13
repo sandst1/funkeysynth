@@ -22,7 +22,7 @@ import com.meego 1.0
 Rectangle {
     id: container
     width: parent.width
-    height: parent.height / 2
+    height: parent.height
 
     state: "play"
 
@@ -76,51 +76,7 @@ Rectangle {
             id: key12
             keyNum: 12
         }
-        WhiteKey {
-            id: key13
-            keyNum: 13
-        }
-        WhiteKey {
-            id: key14
-            keyNum: 14
-        }
-        WhiteKey {
-            id: key15
-            keyNum: 15
-        }
-        WhiteKey {
-            id: key16
-            keyNum: 16
-        }
-        WhiteKey {
-            id: key17
-            keyNum: 17
-        }
-        WhiteKey {
-            id: key18
-            keyNum: 18
-        }
-        // C3
-        WhiteKey {
-            id: key24
-            keyNum: 24
-        }
-        WhiteKey {
-            id: key25
-            keyNum: 25
-        }
-        WhiteKey {
-            id: key26
-            keyNum: 26
-        }
-        WhiteKey {
-            id: key27
-            keyNum: 27
-        }
-        WhiteKey {
-            id: key28
-            keyNum: 28
-        }
+
         // Cis1
         BlackKey {
             id: key7
@@ -146,48 +102,6 @@ Rectangle {
             id: key11
             keyNum: 11
             anchors.horizontalCenter: key5.right
-        }
-        // Cis2
-        BlackKey {
-            id: key19
-            keyNum: 19
-            anchors.horizontalCenter: key12.right
-        }
-        BlackKey {
-            id: key20
-            keyNum: 20
-            anchors.horizontalCenter: key13.right
-        }
-        BlackKey {
-            id: key21
-            keyNum: 21
-            anchors.horizontalCenter: key15.right
-        }
-        BlackKey {
-            id: key22
-            keyNum: 22
-            anchors.horizontalCenter: key16.right
-        }
-        BlackKey {
-            id: key23
-            keyNum: 23
-            anchors.horizontalCenter: key17.right
-        }
-        // Cis3
-        BlackKey {
-            id: key31
-            keyNum: 31
-            anchors.horizontalCenter: key24.right
-        }
-        BlackKey {
-            id: key32
-            keyNum: 32
-            anchors.horizontalCenter: key25.right
-        }
-        BlackKey {
-            id: key33
-            keyNum: 33
-            anchors.horizontalCenter: key27.right
         }
     }
 
@@ -295,7 +209,7 @@ Rectangle {
             name: "play"
             PropertyChanges {
                 target: container
-                height: parent.height / 2
+                height: parent.height * 0.8
 
             }
         },
@@ -303,7 +217,7 @@ Rectangle {
             name: "settings"
             PropertyChanges {
                 target: container
-                height: 250
+                height: parent.height * 0.2
             }
         }
     ]

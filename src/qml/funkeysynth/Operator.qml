@@ -39,9 +39,9 @@ Rectangle {
         modfactor.visible = true
     }
 
-    function setVolume(volume) {
+    /*function setVolume(volume) {
         controls.volumeSlider.setValue(volume);
-    }
+    }*/
 
     Row {
         id: controls
@@ -53,7 +53,7 @@ Rectangle {
         Slider {
             id: attack
             name: "Attack(ms)"
-            max: 1000
+            max: 1000            
             onValueChanged: { operator.attackChanged(value) }
         }
         Slider {
@@ -92,6 +92,7 @@ Rectangle {
         Oscillator {
             id: osc
             anchors.verticalCenter: parent.verticalCenter
+            anchors.centerIn: parent
             onStateChanged: { operator.stateChanged(value) }
             name: operator.name
         }

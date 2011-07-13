@@ -20,7 +20,7 @@ import Qt 4.7
 
 Key {
     height: parent.height
-    width: 90
+    width: 106
     color: color_normal
     color_normal: "#FFFFFF"
 

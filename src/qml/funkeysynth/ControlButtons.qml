@@ -105,8 +105,8 @@ Row {
 
         onClicked: {
             keyboard.toggle();
-            modulators.toggle();
-            mainControls.toggle();
+            //modulators.toggle();
+            //mainControls.toggle();
             buttonsRow.toggle();
         }
     }

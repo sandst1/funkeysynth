@@ -61,8 +61,8 @@ int main(int argc, char *argv[])
     view->setSource(QUrl("qrc:/qml/funkeysynth/main.qml"));
     view->setResizeMode(QDeclarativeView::SizeRootObjectToView);
     //qDebug("main::showing qml window");
-    //view->showFullScreen();    
-    view->showNormal();
+    view->showFullScreen();
+    //view->showNormal();
 
     app.exec();
 
