@@ -70,7 +70,7 @@ unix {
     icon32.files = data/32x32/funkeysynth.png
     icon32.path = /usr/share/icons/hicolor/32x32/apps
     INSTALLS += icon32
-    icon64.files = data/64x64/funkeysynth.png
+    icon64.files = ../funkeysynth.png
     icon64.path = /usr/share/icons/hicolor/64x64/apps
     INSTALLS += icon64
     icon128.files = data/128x128/funkeysynth.png
