@@ -1,0 +1,3 @@
+- Occasional crashes when playing the keyboard fast
+- Start app -> Bend on -> Press a key -> Note keeps playing
+- Robustness to the keyboard (sometimes they get stuck)
