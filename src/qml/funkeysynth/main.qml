@@ -38,12 +38,25 @@ Rectangle {
         anchors.bottom: keyboard.top
         anchors.left: parent.left
         onStateChanged: { Operator1.setWaveType(value); }
-        name: operator.name
+        //name: operator.name
+    }      
+
+    Button {
+        id: envelopeButton
+        anchors.left: mainOsc.right
+        anchors.margins: 10
+        anchors.bottom: keyboard.top
+        text: "Dynamics"
+        text2: "Dynamics"
+
+        onClicked: {
+            mainEnvelope.toggle();
+        }
     }
 
     ControlButtons {
         id: controlButtons
-        anchors.left: mainOsc.right
+        anchors.left: envelopeButton.right
         anchors.margins: 10
         anchors.bottom: keyboard.top
     }
@@ -66,6 +79,12 @@ Rectangle {
         id: keyboard
         anchors.bottom: parent.bottom
         anchors.left:  parent.left
+    }
+
+    MainEnvelope {
+        id: mainEnvelope
+        height: keyboard.height
+        visible: true
     }
 
     Component.onCompleted: {

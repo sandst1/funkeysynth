@@ -1,5 +1,14 @@
+funkeysynth (0.12-1) unstable; urgency=low
+
+  * Added envelope (attack,decay,sustain,release)
+  * Added LFO
+  * Fixed the icon
+
+ -- maintainer Topi Santakivi <topi.santakivi@gmail.com>  Sat, 16 Jul 2011 16:20:14 +0300
+
 funkeysynth (0.11-1) unstable; urgency=low
 
-  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * Initial release
 
  -- maintainer Topi Santakivi <topi.santakivi@gmail.com>  Wed, 13 Jul 2011 12:19:43 +0300
+

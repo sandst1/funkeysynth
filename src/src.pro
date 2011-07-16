@@ -78,7 +78,8 @@ OTHER_FILES += \
     qml/funkeysynth/ControlButtons.qml \
     qml/funkeysynth/Button.qml \
     qml/funkeysynth/BlackKey.qml \
-    qml/funkeysynth/KeyTouchPoint.qml
+    qml/funkeysynth/KeyTouchPoint.qml \
+    qml/funkeysynth/MainEnvelope.qml
 
 unix {
   #VARIABLES
@@ -115,4 +116,3 @@ unix {
   #icon128.path = /usr/share/icons/hicolor/128x128/apps
   #INSTALLS += icon128
 }
-

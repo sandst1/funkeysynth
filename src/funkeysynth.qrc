@@ -16,5 +16,6 @@
         <file>qml/funkeysynth/LFO.qml</file>
         <file>qml/funkeysynth/TextRectangle.qml</file>
         <file>qml/funkeysynth/KeyTouchPoint.qml</file>
+        <file>qml/funkeysynth/MainEnvelope.qml</file>
     </qresource>
 </RCC>

@@ -21,8 +21,7 @@ import Qt 4.7
 Rectangle {
     id: slider
     width: 80
-    height: 200
-    visible: false
+    height: 320
     property int range: slider.height-handle.height
     property int max: 1000
     property int value: Math.round(((range-handle.y))*max/(range))
@@ -40,6 +39,14 @@ Rectangle {
 
     function setValue(newvalue) {
         handle.y = slider.range - (slider.range*newvalue)/slider.max;
+    }
+
+    Text {
+        anchors.horizontalCenter: parent.horizontalCenter
+        text: name
+        anchors.bottom: slider.top
+        anchors.bottomMargin: 5
+        color: "#ffffff"
     }
 
     Rectangle {
@@ -78,11 +85,4 @@ Rectangle {
             color: "#ffffff"
         }
     }
-    Text {
-        anchors.horizontalCenter: parent.horizontalCenter
-        text: name
-        anchors.top: slider.bottom
-        anchors.topMargin: 5
-        color: "#ffffff"
-    }   
 }

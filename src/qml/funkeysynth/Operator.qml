@@ -39,9 +39,9 @@ Rectangle {
         modfactor.visible = true
     }
 
-    /*function setVolume(volume) {
+    function setVolume(volume) {
         controls.volumeSlider.setValue(volume);
-    }*/
+    }
 
     Row {
         id: controls
@@ -94,6 +94,7 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             anchors.centerIn: parent
             onStateChanged: { operator.stateChanged(value) }
+            visible: false
             name: operator.name
         }
     }
