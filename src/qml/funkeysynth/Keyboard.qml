@@ -253,8 +253,8 @@ Rectangle {
         }
     }
 
- /*   MouseArea {
-        id: playarea
+    MouseArea {
+        id: mousePlayArea
 
         property Key currentKey
 
@@ -262,33 +262,33 @@ Rectangle {
         onPressed: {
             var key = keyboard.childAt(mouseX, mouseY);
             key.press();
-            playarea.currentKey = key;
-            PlayControl.pressKey(key.keyNum);
+            mousePlayArea.currentKey = key;
+            PlayControl.pressKey(key.keyNum, 0);
         }
 
         onPositionChanged: {
             var key = keyboard.childAt(mouseX, mouseY);
-            if (key != null && key.keyNum != playarea.currentKey.keyNum) {                
-                playarea.currentKey.release();
-                PlayControl.releaseKey(playarea.currentKey.keyNum);
+            if (key != null && key.keyNum != mousePlayArea.currentKey.keyNum) {
+                mousePlayArea.currentKey.release();
+                PlayControl.releaseKey(mousePlayArea.currentKey.keyNum, 0);
                 key.press();
-                playarea.currentKey = key;
+                mousePlayArea.currentKey = key;
 
-                PlayControl.pressKey(key.keyNum);
+                PlayControl.sustainKey(key.keyNum, 0);
             }
 
-            Wah.setWahFreq((((playarea.y + playarea.height) - mouseY)/(playarea.height))*2000 + 400);
-            SynthControl.setBendAmount((((playarea.y + playarea.height) - mouseY)/(playarea.height))*75);
+            Wah.setWahFreq((((mousePlayArea.y + mousePlayArea.height) - mouseY)/(mousePlayArea.height))*2000 + 400);
+            SynthControl.setBendAmount((((mousePlayArea.y + mousePlayArea.height) - mouseY)/(mousePlayArea.height))*75, 0);
 
         }
 
         onReleased: {
             var key = keyboard.childAt(mouseX, mouseY);
             key.release();
-            PlayControl.releaseKey(key.keyNum);
-            playarea.currentKey = null;
+            PlayControl.releaseKey(key.keyNum, 0);
+            mousePlayArea.currentKey = null;
         }
-    }*/
+    }
 
     states: [
         State {
