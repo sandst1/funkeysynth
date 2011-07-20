@@ -20,6 +20,26 @@
 #include <QFile>
 #include "synth.h"
 
+#define LOOP_SECONDS 16
+#define LOOP_BUFFER_SIZE LOOP_SECONDS*SAMPLE_RATE
+
+/*
+struct LoopBuffer {
+    enum LoopState {
+        EMPTY,
+        RECORDING,
+        READY,
+        PLAYING
+    };
+    float* data;
+    float* index;
+    unsigned int bufsize;
+    LoopState state;
+};
+
+LoopBuffer m_loopBuffer;
+*/
+
 Synth::Synth(QDeclarativeContext* context, QObject *parent) :
     QObject(parent), m_pressedKeys(), m_octaveFactor(8), m_pitchBend(false)
 {
@@ -31,6 +51,11 @@ Synth::Synth(QDeclarativeContext* context, QObject *parent) :
     m_operators[1]->setFollowsKeys(true);
     m_operators[2]->setFollowsKeys(true);
     m_operators[3]->setFollowsKeys(true);
+
+    m_loopBuffer.data = new float[LOOP_BUFFER_SIZE];
+    m_loopBuffer.state = LoopBuffer::EMPTY;
+    m_loopBuffer.index = m_loopBuffer.data;
+    m_loopBuffer.size = sizeof(LOOP_BUFFER_SIZE);
 
     //qDebug("Synth::setting context properties for operators&effects");
     context->setContextProperty("Operator1", m_operators[0]);
@@ -54,6 +79,11 @@ Synth::Synth(QDeclarativeContext* context, QObject *parent) :
     m_pressedKeys[1].periodInSamples = 0;
 
     connect(m_operators[0], SIGNAL(soundDone(uint)), this, SLOT(freeKey(uint)));
+}
+
+Synth::~Synth()
+{
+    delete m_loopBuffer.data;
 }
 
 void Synth::keyPressed(Key key, unsigned int index)
@@ -163,6 +193,53 @@ void Synth::setBendAmount(int bend, unsigned int index)
     m_pressedKeys[index].bendAmount = bend;
 }
 
+void Synth::recordLoop()
+{
+    if (m_loopBuffer.state != LoopBuffer::RECORDING)
+    {
+        qDebug("Synth::recordLoop");
+
+        if (m_loopBuffer.state & (LoopBuffer::READY |
+                                  LoopBuffer::PLAYING))
+        {
+            m_loopBuffer.index = m_loopBuffer.data;
+            m_loopBuffer.size = 0;
+        }
+
+        m_loopBuffer.state = LoopBuffer::RECORDING;
+    }
+}
+
+void Synth::stopRecording()
+{
+    if (m_loopBuffer.state == LoopBuffer::RECORDING)
+    {
+        qDebug("Synth::stopRecording");
+        m_loopBuffer.state = LoopBuffer::READY;
+        m_loopBuffer.index = m_loopBuffer.data;
+    }
+}
+
+void Synth::playLoop()
+{
+    if (m_loopBuffer.state == LoopBuffer::READY)
+    {
+        qDebug("Synth::playLoop");
+        m_loopBuffer.state = LoopBuffer::PLAYING;
+    }
+}
+
+void Synth::stopLoop()
+{
+    qDebug("Synth::stopLoop IN");
+    if (m_loopBuffer.state == LoopBuffer::PLAYING)
+    {
+        qDebug("Synth::stopLoop, stopping");
+        m_loopBuffer.index = m_loopBuffer.data;
+        m_loopBuffer.state = LoopBuffer::READY;
+    }
+}
+
 // ENDOF SynthControl interface
 
 float Synth::snd()
@@ -211,6 +288,31 @@ float Synth::snd()
                                 m_lfo->snd() - M_PI_PER2, 1) * 0.5;
 
     m_effects->apply(sample);
+
+
+    switch (m_loopBuffer.state)
+    {
+        case LoopBuffer::RECORDING:
+            *m_loopBuffer.index++ = sample;
+            m_loopBuffer.size++;
+            if (m_loopBuffer.size >= LOOP_BUFFER_SIZE)
+            {
+                m_loopBuffer.index = m_loopBuffer.data;
+                m_loopBuffer.state = m_loopBuffer.READY;
+                emit this->loopBufferFull();
+            }
+        break;
+
+        case LoopBuffer::PLAYING:
+            sample += *m_loopBuffer.index++;
+            if (m_loopBuffer.index >= m_loopBuffer.data+m_loopBuffer.size)
+                m_loopBuffer.index = m_loopBuffer.data;
+        break;
+
+        default:
+        break;
+    }
+
 
     return sample;
 
