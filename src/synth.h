@@ -99,6 +99,7 @@ public:
 
 signals:
     void loopBufferFull();
+    void recordingStarted();
 public slots:
     void freeKey(unsigned int index);
 private:
@@ -114,9 +115,10 @@ private:
     struct LoopBuffer {
         enum LoopState {
             EMPTY     = 0x0,
-            RECORDING = 0x2,
-            READY     = 0x4,
-            PLAYING   = 0x8
+            REC_WAIT  = 0x2,
+            RECORDING = 0x4,
+            READY     = 0x8,
+            PLAYING   = 0x16
         };
         float* data;
         float* index;

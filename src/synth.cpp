@@ -22,23 +22,8 @@
 
 #define LOOP_SECONDS 16
 #define LOOP_BUFFER_SIZE LOOP_SECONDS*SAMPLE_RATE
-
-/*
-struct LoopBuffer {
-    enum LoopState {
-        EMPTY,
-        RECORDING,
-        READY,
-        PLAYING
-    };
-    float* data;
-    float* index;
-    unsigned int bufsize;
-    LoopState state;
-};
-
-LoopBuffer m_loopBuffer;
-*/
+#define MSEC_TO_SAMPLES(x) ((x/1000)*SAMPLE_RATE)
+#define LOOP_COMPENSATION MSEC_TO_SAMPLES(30.0)
 
 Synth::Synth(QDeclarativeContext* context, QObject *parent) :
     QObject(parent), m_pressedKeys(), m_octaveFactor(8), m_pitchBend(false)
@@ -87,12 +72,16 @@ Synth::~Synth()
 }
 
 void Synth::keyPressed(Key key, unsigned int index)
-{
-
-    qDebug("Synth::keyPressed, index %d", index);
+{   
+    qDebug("Synth::keyPressed, index %d", index);      
     KeyData* keyData = &(m_pressedKeys[index]);
     if (keyData != NULL)
     {
+        if (m_loopBuffer.state == LoopBuffer::REC_WAIT)
+        {
+            m_loopBuffer.state = LoopBuffer::RECORDING;
+        }
+
         keyData->freq = m_octaveFactor*(pow(2, (int)key/KEYS_IN_OCTAVE))*FREQZTABLE[(int)key % KEYS_IN_OCTAVE];
         keyData->periodInSamples = (int)((float)SAMPLE_RATE / (keyData->freq));
         keyData->key = key;
@@ -195,7 +184,8 @@ void Synth::setBendAmount(int bend, unsigned int index)
 
 void Synth::recordLoop()
 {
-    if (m_loopBuffer.state != LoopBuffer::RECORDING)
+    if (!(m_loopBuffer.state & (LoopBuffer::RECORDING |
+                                LoopBuffer::REC_WAIT)))
     {
         qDebug("Synth::recordLoop");
 
@@ -206,7 +196,7 @@ void Synth::recordLoop()
             m_loopBuffer.size = 0;
         }
 
-        m_loopBuffer.state = LoopBuffer::RECORDING;
+        m_loopBuffer.state = LoopBuffer::REC_WAIT;
     }
 }
 
@@ -217,6 +207,10 @@ void Synth::stopRecording()
         qDebug("Synth::stopRecording");
         m_loopBuffer.state = LoopBuffer::READY;
         m_loopBuffer.index = m_loopBuffer.data;
+
+        // Compensate for the slight
+        m_loopBuffer.size -= LOOP_COMPENSATION;
+
     }
 }
 
