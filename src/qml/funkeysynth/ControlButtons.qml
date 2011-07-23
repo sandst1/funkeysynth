@@ -121,50 +121,36 @@ Row {
         }
     }
 
-    Button {
-        id: recButton
-        text: "Rec"
-        text2: "Recording"
+    LoopButton {
+        id: loopButton
+        onWaitingForNotes: {
+            SynthControl.recordLoop();
+        }
 
-        onClicked: {
-            if (recButton.state == "state2") {
-                console.log("recButton, calling recordLoop");
-                SynthControl.recordLoop();
-            } else {
-                console.log("recButton, stopping recordLoop");
-                SynthControl.stopRecording();
-            }
+        onLoopReady: {
+            SynthControl.stopRecording();
+        }
+
+        onLoopPlay: {
+            SynthControl.playLoop();
+        }
+
+        onLoopStop: {
+            SynthControl.stopLoop();
         }
 
         Connections {
             target: SynthControl
+
+            onRecordingStarted: {
+                loopButton.startRecording();
+            }
+
             onLoopBufferFull: {
-                recButton.toggle();
+                loopButton.loopFull();
             }
         }
     }
-
-    Button {
-        id: playButton
-        text: "Play"
-        text2: "Playing"
-
-        onClicked: {
-            if (recButton.state == "state2") {
-                playButton.reset();
-                return;
-            }
-
-            if (playButton.state == "state2") {
-                console.log("playButton, calling playLoop");
-                SynthControl.playLoop();
-            } else {
-                console.log("playButton, calling stopLoop");
-                SynthControl.stopLoop();
-            }
-        }
-    }
-
 
 
 
