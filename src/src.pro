@@ -79,7 +79,8 @@ OTHER_FILES += \
     qml/funkeysynth/Button.qml \
     qml/funkeysynth/BlackKey.qml \
     qml/funkeysynth/KeyTouchPoint.qml \
-    qml/funkeysynth/MainEnvelope.qml
+    qml/funkeysynth/MainEnvelope.qml \
+    qml/funkeysynth/LoopButton.qml
 
 unix {
   #VARIABLES

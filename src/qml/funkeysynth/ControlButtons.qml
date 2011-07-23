@@ -111,6 +111,36 @@ Row {
         }
     }
 
+    LoopButton {
+        id: loopButton
+        onWaitingForNotes: {
+            SynthControl.recordLoop();
+        }
+
+        onLoopReady: {
+            SynthControl.stopRecording();
+        }
+
+        onLoopPlay: {
+            SynthControl.playLoop();
+        }
+
+        onLoopStop: {
+            SynthControl.stopLoop();
+        }
+
+        Connections {
+            target: SynthControl
+            onRecordingStarted: {
+                loopButton.startRecording();
+            }
+
+            onLoopBufferFull: {
+                loopButton.loopFull();
+            }
+        }
+    }
+
     Button {
         id: closeButton
         text: "Exit"
