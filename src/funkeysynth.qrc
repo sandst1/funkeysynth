@@ -16,5 +16,10 @@
         <file>qml/funkeysynth/LFO.qml</file>
         <file>qml/funkeysynth/TextRectangle.qml</file>
         <file>qml/funkeysynth/KeyTouchPoint.qml</file>
+        <file>qml/funkeysynth/LoopButton.qml</file>
+        <file>images/play.png</file>
+        <file>images/playpause.png</file>
+        <file>images/rec.png</file>
+        <file>images/recpause.png</file>
     </qresource>
 </RCC>
