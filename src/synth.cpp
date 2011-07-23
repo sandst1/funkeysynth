@@ -23,7 +23,7 @@
 #define LOOP_SECONDS 16
 #define LOOP_BUFFER_SIZE LOOP_SECONDS*SAMPLE_RATE
 #define MSEC_TO_SAMPLES(x) ((x/1000)*SAMPLE_RATE)
-#define LOOP_COMPENSATION MSEC_TO_SAMPLES(30.0)
+#define LOOP_COMPENSATION MSEC_TO_SAMPLES(200.0)
 
 Synth::Synth(QDeclarativeContext* context, QObject *parent) :
     QObject(parent), m_pressedKeys(), m_octaveFactor(8), m_pitchBend(false)
