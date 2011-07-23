@@ -80,6 +80,7 @@ void Synth::keyPressed(Key key, unsigned int index)
         if (m_loopBuffer.state == LoopBuffer::REC_WAIT)
         {
             m_loopBuffer.state = LoopBuffer::RECORDING;
+            emit this->recordingStarted();
         }
 
         keyData->freq = m_octaveFactor*(pow(2, (int)key/KEYS_IN_OCTAVE))*FREQZTABLE[(int)key % KEYS_IN_OCTAVE];
