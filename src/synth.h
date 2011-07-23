@@ -73,6 +73,7 @@ public:
     };
 
     explicit Synth(QDeclarativeContext* context, QObject *parent = 0);
+    ~Synth();
 
     void keyPressed(Key key, unsigned int index);
     void keyReleased(Key key, unsigned int index);
@@ -89,10 +90,15 @@ public:
     Q_INVOKABLE void setBend(bool state);
     Q_INVOKABLE void setBendAmount(int bend, unsigned int index);
 
+    Q_INVOKABLE void recordLoop();
+    Q_INVOKABLE void stopRecording();
+    Q_INVOKABLE void playLoop();
+    Q_INVOKABLE void stopLoop();
+
     float snd();
 
 signals:
-
+    void loopBufferFull();
 public slots:
     void freeKey(unsigned int index);
 private:
@@ -104,6 +110,21 @@ private:
         int phase;
         int bendAmount;
     };
+
+    struct LoopBuffer {
+        enum LoopState {
+            EMPTY     = 0x0,
+            RECORDING = 0x2,
+            READY     = 0x4,
+            PLAYING   = 0x8
+        };
+        float* data;
+        float* index;
+        unsigned int size;
+        LoopState state;
+    };
+
+    LoopBuffer m_loopBuffer;
 
     KeyData* getFreeKey();
     KeyData* getKeyData(const Key& key);
