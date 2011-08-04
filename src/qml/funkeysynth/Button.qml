@@ -35,6 +35,10 @@ Rectangle {
         }
     }
 
+    function denyManualDisable() {
+        button.manualDisable = false;
+    }
+
     signal clicked()
     property string text: "Default"
     property string text2: "Default2"
@@ -42,6 +46,8 @@ Rectangle {
     property color  normalColor: "#000000"
     property color  pressedColor: "#3952ED"
     property alias buttonText: buttonText
+
+    property bool manualDisable: true
 
     border.color: "#3952ED"
     border.width: 2
@@ -58,7 +64,8 @@ Rectangle {
             if (button.state == "state1") {
                 button.state = "state2"
             } else {
-                button.state = "state1"
+                if (button.manualDisable)
+                    button.state = "state1";
             }
             button.clicked();
         }

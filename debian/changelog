@@ -1,8 +1,9 @@
 funkeysynth (0.12.1-1) unstable; urgency=low
 
   * Recording&playback of 16-sec loops
+  * UI for the 3 additional oscillators
 
- -- maintainer Topi Santakivi <topi.santakivi@gmail.com>  Sat, 23 Jul 2011 22:05:59 +0300
+ -- maintainer Topi Santakivi <topi.santakivi@gmail.com>  Thu, 04 Aug 2011 15:54:21 +0300
 
 funkeysynth (0.12-1) unstable; urgency=low
 

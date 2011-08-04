@@ -45,7 +45,7 @@ Rectangle {
             text2: "osc2"
             state: "state2"
 
-            onClicked: {
+            onClicked: {                               
                 operator2.state = "visible";
                 operator3.state = "hidden";
                 operator4.state = "hidden";
@@ -155,5 +155,9 @@ Rectangle {
         operator2.enableOsc();
         operator3.enableOsc();
         operator4.enableOsc();
+
+        selectOp2.denyManualDisable();
+        selectOp3.denyManualDisable();
+        selectOp4.denyManualDisable();
     }
 }
