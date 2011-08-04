@@ -22,5 +22,7 @@
         <file>images/rec.png</file>
         <file>images/recpause.png</file>
         <file>qml/funkeysynth/LoopButton.qml</file>
+        <file>qml/funkeysynth/SubEnvelopes.qml</file>
+        <file>qml/funkeysynth/ModsWindow.qml</file>
     </qresource>
 </RCC>

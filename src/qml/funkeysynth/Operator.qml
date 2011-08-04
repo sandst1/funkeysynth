@@ -20,6 +20,7 @@ import Qt 4.7
 
 Rectangle {
     id: operator
+    state: "visible"
     signal attackChanged(int value)
     signal decayChanged(int value)
     signal sustainChanged(int value)
@@ -32,11 +33,14 @@ Rectangle {
     height: controls.childrenRect.height
 
     property string name: "-1"
-
     color: "#00000000"
 
     function enableFreqMod() {
-        modfactor.visible = true
+        modfactor.visible = true;
+    }
+
+    function enableOsc() {
+        osc.visible = true;
     }
 
     function setVolume(volume) {
@@ -91,11 +95,41 @@ Rectangle {
 
         Oscillator {
             id: osc
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.centerIn: parent
+            anchors.top: parent.top
+            anchors.right: parent.right
             onStateChanged: { operator.stateChanged(value) }
             visible: false
             name: operator.name
         }
     }
+
+    states: [
+        State {
+            name: "hidden"
+            PropertyChanges {
+                target: operator
+                opacity: 0
+
+            }
+        },
+        State {
+            name: "visible"
+            PropertyChanges {
+                target: operator
+                opacity: 1
+            }
+        }
+    ]
+
+    transitions: [
+        Transition {
+            from: "hidden"
+            to: "visible"
+            reversible: true
+            NumberAnimation {
+                properties: "opacity";
+                duration: 400
+            }
+        }
+    ]
 }

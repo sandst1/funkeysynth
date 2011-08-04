@@ -27,6 +27,14 @@ Rectangle {
     radius: 5
     state: "state1"
 
+    function toggle() {
+        if (state == "state1") {
+            state = "state2";
+        } else {
+            state = "state1";
+        }
+    }
+
     signal clicked()
     property string text: "Default"
     property string text2: "Default2"

@@ -19,10 +19,13 @@
 import Qt 4.7
 
 Rectangle {
+    id: modswindow
     width: 854
     height: 480
     //width: ScreenWidth
     //height: ScreenHeight
+
+    state: "hidden"
 
     gradient: Gradient {
         GradientStop { position: 0.0; color: "#000C58" }
@@ -30,67 +33,64 @@ Rectangle {
         GradientStop { position: 1.0; color: "white" }
     }
 
-    Oscillator {
-        id: mainOsc
-        //anchors.verticalCenter: parent.verticalCenter
-        //anchors.centerIn: parent
-        anchors.margins: 10
-        anchors.bottom: keyboard.top
-        anchors.left: parent.left
-        onStateChanged: { Operator1.setWaveType(value); }
-        //name: operator.name
-    }      
-
-    Button {
-        id: envelopeButton
-        anchors.left: mainOsc.right
-        anchors.margins: 10
-        anchors.bottom: keyboard.top
-        text: "Dynamics"
-        text2: "Dynamics"
-
-        onClicked: {
-            mainEnvelope.toggle();
-        }
+    SubEnvelopes {
+        id: subenvelopes
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.margins: 40
     }
-
-    ControlButtons {
-        id: controlButtons
-        anchors.left: envelopeButton.right
-        anchors.margins: 10
-        anchors.bottom: keyboard.top
-    }
-
-    /*
-    MainControls {
-        id: mainControls
-        anchors.bottom: keyboard.top
-        anchors.right: controlButtons.left
-//        x: controlButtons.x + width/2
-    }*/
-
-    /*Modulators {
-        id: modulators
-        y: 10
-        x: 10
-    }*/
 
     Keyboard {
         id: keyboard
+        state: "settings"
+        height: parent.height * 0.2
         anchors.bottom: parent.bottom
         anchors.left:  parent.left
     }
 
-    MainEnvelope {
-        id: mainEnvelope
-        height: keyboard.height
-        visible: true
+    Button {
+        id: backButton
+        anchors.bottom: keyboard.top
+        anchors.right: parent.right
+
+        text: "Play"
+        text2: "Play"
+
+        onClicked: {
+            modswindow.state = "hidden";
+            backButton.state = "state1";
+        }
     }
 
-    ModsWindow {
-        id: modswindow
-        state: "hidden"
-    }
+    states: [
+        State {
+            name: "hidden"
+            PropertyChanges {
+                target: modswindow
+                x: -900
+
+            }
+        },
+        State {
+            name: "visible"
+            PropertyChanges {
+                target: modswindow
+                x: 0
+            }
+        }
+    ]
+
+    transitions: [
+        Transition {
+            from: "hidden"
+            to: "visible"
+            reversible: true
+            NumberAnimation {
+                properties: "x";
+                duration: 200
+            }
+        }
+    ]
 
     Component.onCompleted: {
         Operator1.setAttack(0)
@@ -100,4 +100,5 @@ Rectangle {
         Operator1.setModFactor(1);
         Operator1.setVolume(75);
     }
+
 }

@@ -104,10 +104,12 @@ Row {
         text2: "Main"
 
         onClicked: {
-            keyboard.toggle();
+            //keyboard.toggle();
             //modulators.toggle();
             //mainControls.toggle();
-            buttonsRow.toggle();
+            //buttonsRow.toggle();
+            modswindow.state = "visible";
+            settingsButton.state = "state1";
         }
     }
 

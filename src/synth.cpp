@@ -73,7 +73,7 @@ Synth::~Synth()
 
 void Synth::keyPressed(Key key, unsigned int index)
 {   
-    qDebug("Synth::keyPressed, index %d", index);      
+    qDebug("Synth::keyPressed, index %d", index);
     KeyData* keyData = &(m_pressedKeys[index]);
     if (keyData != NULL)
     {
