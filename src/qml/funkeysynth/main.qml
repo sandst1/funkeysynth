@@ -98,6 +98,6 @@ Rectangle {
         Operator1.setSustain(100)
         Operator1.setRelease(0)
         Operator1.setModFactor(1);
-        Operator1.setVolume(75);
+        Operator1.setVolume(75);        
     }
 }

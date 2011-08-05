@@ -41,16 +41,15 @@ Rectangle {
     }
 
     Keyboard {
-        id: keyboard
-        state: "settings"
-        height: parent.height * 0.2
+        id: kbd
+        state: "modswindow"
         anchors.bottom: parent.bottom
         anchors.left:  parent.left
     }
 
     Button {
         id: backButton
-        anchors.bottom: keyboard.top
+        anchors.bottom: kbd.top
         anchors.right: parent.right
 
         text: "Play"
@@ -59,7 +58,14 @@ Rectangle {
         onClicked: {
             modswindow.state = "hidden";
             backButton.state = "state1";
+            keyboard.visible = true;
         }
+    }
+
+    AlgorithmSelector {
+        id: algselector
+        anchors.bottom: backButton.top
+        anchors.right: parent.right
     }
 
     states: [

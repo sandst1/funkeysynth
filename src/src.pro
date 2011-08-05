@@ -82,7 +82,8 @@ OTHER_FILES += \
     qml/funkeysynth/MainEnvelope.qml \
     qml/funkeysynth/LoopButton.qml \
     qml/funkeysynth/SubEnvelopes.qml \
-    qml/funkeysynth/ModsWindow.qml
+    qml/funkeysynth/ModsWindow.qml \
+    qml/funkeysynth/AlgorithmSelector.qml
 
 unix {
   #VARIABLES

@@ -21,7 +21,7 @@ import Qt 4.7
 Rectangle {
     id: slider
     width: 80
-    height: 320
+    height: 280
     property int range: slider.height-handle.height
     property int max: 1000
     property int value: Math.round(((range-handle.y))*max/(range))

@@ -110,6 +110,7 @@ Row {
             //buttonsRow.toggle();
             modswindow.state = "visible";
             settingsButton.state = "state1";
+            keyboard.visible = false;
         }
     }
 

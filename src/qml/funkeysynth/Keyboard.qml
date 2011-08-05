@@ -219,6 +219,13 @@ Rectangle {
                 target: container
                 height: parent.height * 0.2
             }
+        },
+        State {
+            name: "modswindow"
+            PropertyChanges {
+                target: container
+                height: parent.height * 0.3
+            }
         }
     ]
 

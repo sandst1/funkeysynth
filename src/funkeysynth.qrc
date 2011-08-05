@@ -24,5 +24,12 @@
         <file>qml/funkeysynth/LoopButton.qml</file>
         <file>qml/funkeysynth/SubEnvelopes.qml</file>
         <file>qml/funkeysynth/ModsWindow.qml</file>
+        <file>images/alg0.png</file>
+        <file>images/alg1.png</file>
+        <file>images/alg2.png</file>
+        <file>images/alg3.png</file>
+        <file>images/alg4.png</file>
+        <file>images/alg5.png</file>
+        <file>qml/funkeysynth/AlgorithmSelector.qml</file>
     </qresource>
 </RCC>

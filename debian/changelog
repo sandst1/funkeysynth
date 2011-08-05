@@ -2,6 +2,7 @@ funkeysynth (0.12.1-1) unstable; urgency=low
 
   * Recording&playback of 16-sec loops
   * UI for the 3 additional oscillators
+  * Support for algorithms (routing of the oscillators)
 
  -- maintainer Topi Santakivi <topi.santakivi@gmail.com>  Thu, 04 Aug 2011 15:54:21 +0300
 
