@@ -90,6 +90,8 @@ public:
     Q_INVOKABLE void setBend(bool state);
     Q_INVOKABLE void setBendAmount(int bend, unsigned int index);
 
+    Q_INVOKABLE void setAlgorithm(int algorithm);
+
     Q_INVOKABLE void recordLoop();
     Q_INVOKABLE void stopRecording();
     Q_INVOKABLE void playLoop();
@@ -131,6 +133,8 @@ private:
     KeyData* getFreeKey();
     KeyData* getKeyData(const Key& key);
 
+    float sndalg(float wphase, unsigned int envelope);
+
     KeyData m_pressedKeys[2];
 
     int m_octaveFactor;    
@@ -141,6 +145,8 @@ private:
     LFO* m_lfo;
 
     bool m_pitchBend;
+
+    int m_algorithm;
 };
 
 #endif // SYNTH_H

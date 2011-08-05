@@ -26,7 +26,7 @@
 #define LOOP_COMPENSATION MSEC_TO_SAMPLES(200.0)
 
 Synth::Synth(QDeclarativeContext* context, QObject *parent) :
-    QObject(parent), m_pressedKeys(), m_octaveFactor(8), m_pitchBend(false)
+    QObject(parent), m_pressedKeys(), m_octaveFactor(8), m_pitchBend(false), m_algorithm(0)
 {
     m_operators[0] = new Operator(this);
     m_operators[1] = new Operator(this);
@@ -183,6 +183,12 @@ void Synth::setBendAmount(int bend, unsigned int index)
     m_pressedKeys[index].bendAmount = bend;
 }
 
+void Synth::setAlgorithm(int algorithm)
+{
+    qDebug("Synth::setAlgorithm to %d", algorithm);
+    m_algorithm = algorithm;
+}
+
 void Synth::recordLoop()
 {
     if (!(m_loopBuffer.state & (LoopBuffer::RECORDING |
@@ -264,11 +270,13 @@ float Synth::snd()
 
     phase = m_pressedKeys[0].phase;
     wc = 2.0*M_PI*((float)(m_pressedKeys[0].freq)/SAMPLE_RATE);
-    sample = m_operators[0]->snd(wc*phase +
+    /*sample = m_operators[0]->snd(wc*phase +
                                 m_operators[1]->snd(m_operators[1]->modFactor()*wc*(float)phase - M_PI_PER2, 0) +
                                 m_operators[2]->snd(m_operators[2]->modFactor()*wc*(float)phase - M_PI_PER2, 0) +
                                 m_operators[3]->snd(m_operators[3]->modFactor()*wc*(float)phase - M_PI_PER2, 0) +
-                                m_lfo->snd() - M_PI_PER2, 0) * 0.5;
+                                m_lfo->snd() - M_PI_PER2, 0) * 0.5;*/
+
+    sample = sndalg(wc*phase + m_lfo->snd(), 0) * 0.5;
 
     m_pressedKeys[1].phase++;
     if (m_pressedKeys[1].phase>=m_pressedKeys[1].periodInSamples)
@@ -276,11 +284,13 @@ float Synth::snd()
 
     phase = m_pressedKeys[1].phase;
     wc = 2.0*M_PI*((float)(m_pressedKeys[1].freq)/SAMPLE_RATE);
-    sample += m_operators[0]->snd(wc*phase +
+    /*sample += m_operators[0]->snd(wc*phase +
                                 m_operators[1]->snd(m_operators[1]->modFactor()*wc*(float)phase - M_PI_PER2, 1) +
                                 m_operators[2]->snd(m_operators[2]->modFactor()*wc*(float)phase - M_PI_PER2, 1) +
                                 m_operators[3]->snd(m_operators[3]->modFactor()*wc*(float)phase - M_PI_PER2, 1) +
-                                m_lfo->snd() - M_PI_PER2, 1) * 0.5;
+                                m_lfo->snd() - M_PI_PER2, 1) * 0.5;*/
+
+    sample += sndalg(wc*phase + m_lfo->snd(), 1) * 0.5;
 
     m_effects->apply(sample);
 
@@ -375,4 +385,72 @@ Synth::KeyData* Synth::getKeyData(const Key& key)
     qDebug("synth::getKeyData NULL");
     return NULL;
 
+}
+
+float Synth::sndalg(float wphase, unsigned int envelope)
+{
+    switch (m_algorithm) {
+        // All operators in parallel
+        case 0:
+            return (m_operators[0]->snd(wphase - M_PI_PER2, envelope) +
+                    m_operators[1]->snd(wphase - M_PI_PER2, envelope) +
+                    m_operators[2]->snd(wphase - M_PI_PER2, envelope) +
+                    m_operators[3]->snd(wphase - M_PI_PER2, envelope));
+        break;
+
+        // 2->0 & 3->1
+        case 1:
+            return (m_operators[0]->snd(wphase +
+                        m_operators[2]->snd(m_operators[2]->modFactor()*wphase - M_PI_PER2, envelope) - M_PI_PER2, envelope) +
+                    m_operators[1]->snd(wphase +
+                        m_operators[3]->snd(m_operators[3]->modFactor()*wphase - M_PI_PER2, envelope) - M_PI_PER2, envelope));
+
+
+        break;
+
+        // 3->2->1->0
+        case 2:
+            return (m_operators[0]->snd(wphase +
+                        m_operators[1]->snd(m_operators[1]->modFactor()*wphase +
+                            m_operators[2]->snd(m_operators[2]->modFactor()*wphase +
+                                m_operators[3]->snd(m_operators[3]->modFactor()*wphase - M_PI_PER2, envelope)
+                                - M_PI_PER2, envelope)
+                            - M_PI_PER2, envelope)
+                        - M_PI_PER2, envelope));
+
+        break;
+
+        // 1->0, rest in parallel
+        case 3:
+            return (m_operators[0]->snd(wphase +
+                        m_operators[1]->snd(m_operators[1]->modFactor()*wphase - M_PI_PER2, envelope) - M_PI_PER2, envelope) +
+                    m_operators[2]->snd(wphase - M_PI_PER2, envelope) +
+                    m_operators[3]->snd(wphase - M_PI_PER2, envelope));
+
+        break;
+
+        // 1->0 & 2->0, 3 in parallel
+        case 4:
+            return (m_operators[0]->snd(wphase +
+                        m_operators[1]->snd(m_operators[1]->modFactor()*wphase - M_PI_PER2, envelope) +
+                        m_operators[2]->snd(m_operators[2]->modFactor()*wphase - M_PI_PER2, envelope)
+                    - M_PI_PER2, envelope) +
+                    m_operators[3]->snd(wphase - M_PI_PER2, envelope));
+        break;
+
+        // 2->1->0, 3 in parallel
+        case 5:
+            return (m_operators[0]->snd(wphase +
+                        m_operators[1]->snd(m_operators[1]->modFactor()*wphase +
+                            m_operators[2]->snd(m_operators[2]->modFactor()*wphase - M_PI_PER2, envelope)
+                        - M_PI_PER2, envelope)
+                    - M_PI_PER2, envelope) +
+                    m_operators[3]->snd(wphase - M_PI_PER2, envelope));
+        break;
+
+        default:
+        break;
+    }
+
+    return 0.0;
 }
