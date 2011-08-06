@@ -392,18 +392,18 @@ float Synth::sndalg(float wphase, unsigned int envelope)
     switch (m_algorithm) {
         // All operators in parallel
         case 0:
-            return (m_operators[0]->snd(wphase - M_PI_PER2, envelope) +
-                    m_operators[1]->snd(wphase - M_PI_PER2, envelope) +
-                    m_operators[2]->snd(wphase - M_PI_PER2, envelope) +
-                    m_operators[3]->snd(wphase - M_PI_PER2, envelope));
+            return ((m_operators[0]->snd(wphase - M_PI_PER2, envelope)*0.25) +
+                    (m_operators[1]->snd(wphase - M_PI_PER2, envelope)*0.25) +
+                    (m_operators[2]->snd(wphase - M_PI_PER2, envelope)*0.25) +
+                    (m_operators[3]->snd(wphase - M_PI_PER2, envelope)*0.25));
         break;
 
         // 2->0 & 3->1
         case 1:
-            return (m_operators[0]->snd(wphase +
-                        m_operators[2]->snd(m_operators[2]->modFactor()*wphase - M_PI_PER2, envelope) - M_PI_PER2, envelope) +
-                    m_operators[1]->snd(wphase +
-                        m_operators[3]->snd(m_operators[3]->modFactor()*wphase - M_PI_PER2, envelope) - M_PI_PER2, envelope));
+            return ((m_operators[0]->snd(wphase +
+                         m_operators[2]->snd(m_operators[2]->modFactor()*wphase - M_PI_PER2, envelope) - M_PI_PER2, envelope)*0.5) +
+                    (m_operators[1]->snd(wphase +
+                         m_operators[3]->snd(m_operators[3]->modFactor()*wphase - M_PI_PER2, envelope) - M_PI_PER2, envelope)*0.5));
 
 
         break;
@@ -422,30 +422,30 @@ float Synth::sndalg(float wphase, unsigned int envelope)
 
         // 1->0, rest in parallel
         case 3:
-            return (m_operators[0]->snd(wphase +
-                        m_operators[1]->snd(m_operators[1]->modFactor()*wphase - M_PI_PER2, envelope) - M_PI_PER2, envelope) +
-                    m_operators[2]->snd(wphase - M_PI_PER2, envelope) +
-                    m_operators[3]->snd(wphase - M_PI_PER2, envelope));
+            return ((m_operators[0]->snd(wphase +
+                        m_operators[1]->snd(m_operators[1]->modFactor()*wphase - M_PI_PER2, envelope) - M_PI_PER2, envelope)*0.33) +
+                    (m_operators[2]->snd(wphase - M_PI_PER2, envelope)*0.33) +
+                    (m_operators[3]->snd(wphase - M_PI_PER2, envelope)*0.33));
 
         break;
 
         // 1->0 & 2->0, 3 in parallel
         case 4:
-            return (m_operators[0]->snd(wphase +
+            return ((m_operators[0]->snd(wphase +
                         m_operators[1]->snd(m_operators[1]->modFactor()*wphase - M_PI_PER2, envelope) +
                         m_operators[2]->snd(m_operators[2]->modFactor()*wphase - M_PI_PER2, envelope)
-                    - M_PI_PER2, envelope) +
-                    m_operators[3]->snd(wphase - M_PI_PER2, envelope));
+                    - M_PI_PER2, envelope)*0.5) +
+                    (m_operators[3]->snd(wphase - M_PI_PER2, envelope)*0.5));
         break;
 
         // 2->1->0, 3 in parallel
         case 5:
-            return (m_operators[0]->snd(wphase +
+            return ((m_operators[0]->snd(wphase +
                         m_operators[1]->snd(m_operators[1]->modFactor()*wphase +
                             m_operators[2]->snd(m_operators[2]->modFactor()*wphase - M_PI_PER2, envelope)
                         - M_PI_PER2, envelope)
-                    - M_PI_PER2, envelope) +
-                    m_operators[3]->snd(wphase - M_PI_PER2, envelope));
+                    - M_PI_PER2, envelope)*0.5) +
+                    (m_operators[3]->snd(wphase - M_PI_PER2, envelope)*0.5));
         break;
 
         default:
